@@ -20,7 +20,7 @@ or
 npx @vicgutt/vicapp
 ```
 
-From there simply anwser the questions asked and choose the template to scaffold.
+From there simply answer the questions asked and choose the template to scaffold.
 
 ## Templates
 
