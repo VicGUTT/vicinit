@@ -23,6 +23,7 @@
         "noFallthroughCasesInSwitch": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
         "allowJs": true,
 
         "outDir": "./dist"
