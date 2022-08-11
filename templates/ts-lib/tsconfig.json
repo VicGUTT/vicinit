@@ -1,5 +1,5 @@
 {
-    "include": ["./src", "./types"],
+    "include": ["./src"],
     "compilerOptions": {
         "types": ["vite/client" /* , "vitest/globals" */, "node"],
 

@@ -9,9 +9,6 @@ const libName = lib.name.split('/')[1] ?? lib.name;
 const year = new Date().getFullYear();
 
 export default defineConfig({
-    esbuild: {
-        minify: true,
-    },
     build: {
         /**
          * @see https://vitejs.dev/config/#build-target
@@ -22,8 +19,6 @@ export default defineConfig({
          * @see https://vitejs.dev/config/#build-chunksizewarninglimit
          */
         chunkSizeWarningLimit: 10, // 10 kbs
-
-        minify: 'terser',
 
         /**
          * @see https://vitejs.dev/config/#build-rollupoptions
