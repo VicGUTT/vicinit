@@ -1,17 +1,12 @@
 #! /usr/bin/env node
 
+import { type Answers, type AnswersRaw } from './types';
 import fs from 'fs';
 import inquirer from 'inquirer';
-import ora from 'ora';
 import str from '@vicgutt/strjs';
-import { Answers, AnswersRaw } from './types';
-import paths from './paths.js';
-import duplicateTemplateToTarget from './steps/duplicateTemplateToTarget.js';
-import setProjectMeta from './steps/setProjectMeta.js';
-import setupProject from './steps/setupProject.js';
-import installDependencies from './steps/installDependencies.js';
-import commitGit from './steps/commitGit.js';
-import setupGit from './steps/setupGit.js';
+import projects from './Projects/index.js';
+import paths from './utils/paths.js';
+import cmd from './utils/cmd.js';
 
 const templates = fs.readdirSync(paths.templates);
 
@@ -52,8 +47,8 @@ const questions = [
     },
 ];
 
-ora().info('Please ensure you have already created and changed into the directory that will host your new project.');
-process.stdout.write('\n');
+cmd.info('Please ensure you have already created and changed into the directory that will host your new project.');
+cmd.line();
 
 inquirer.prompt(questions).then(async (raw: AnswersRaw) => {
     const answers: Answers = {
@@ -67,22 +62,11 @@ inquirer.prompt(questions).then(async (raw: AnswersRaw) => {
             : null,
     };
 
-    process.stdout.write('\n');
+    const Project = projects[str.studly(answers.template) as keyof typeof projects];
 
-    await duplicateTemplateToTarget(answers);
-    process.stdout.write('\n');
+    if (!Project) {
+        return;
+    }
 
-    await setProjectMeta(answers);
-    process.stdout.write('\n');
-
-    await setupProject(answers);
-    process.stdout.write('\n');
-
-    await setupGit();
-    process.stdout.write('\n');
-
-    await installDependencies(answers);
-    process.stdout.write('\n');
-
-    await commitGit('feat: installed dependencies');
+    return Project.handle(answers);
 });

@@ -1,3 +1,5 @@
+import type Project from '../Projects/Project';
+
 export type Paths = {
     root: string;
     target: string;
@@ -15,3 +17,7 @@ export type Answers = {
     keywords: string[] | null;
     template: AnswersRaw['template'];
 };
+
+export type ProjectStep = (answers: Answers) => Promise<void>;
+// @see https://www.typescriptlang.org/docs/handbook/2/classes.html#abstract-construct-signatures
+export type DerivedProject = new () => Project;

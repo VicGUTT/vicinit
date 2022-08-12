@@ -1,5 +1,6 @@
 {
     "include": ["./src"],
+    "exclude": ["./node_modules", "./templates"],
     "compilerOptions": {
         "types": ["vite/client" /* , "vitest/globals" */, "node"],
 
