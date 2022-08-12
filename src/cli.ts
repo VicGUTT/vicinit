@@ -3,13 +3,13 @@
 import fs from 'fs';
 import inquirer from 'inquirer';
 import ora from 'ora';
+import str from '@vicgutt/strjs';
 import { Answers, AnswersRaw } from './types';
 import paths from './paths.js';
 import duplicateTemplateToTarget from './steps/duplicateTemplateToTarget.js';
 import setProjectMeta from './steps/setProjectMeta.js';
 import setupProject from './steps/setupProject.js';
 import installDependencies from './steps/installDependencies.js';
-import strSlug from './utils/strSlug.js';
 import commitGit from './steps/commitGit.js';
 import setupGit from './steps/setupGit.js';
 
@@ -58,7 +58,7 @@ process.stdout.write('\n');
 inquirer.prompt(questions).then(async (raw: AnswersRaw) => {
     const answers: Answers = {
         ...raw,
-        name: strSlug(raw.name),
+        name: str.slug(raw.name),
         keywords: raw.keywords
             ? raw.keywords
                   .split(',')
