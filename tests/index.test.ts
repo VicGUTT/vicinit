@@ -1,3 +1,3 @@
-test.todo('Write some tests at some point... 🤷‍♂️');
+import { test } from 'vitest';
 
-export {};
+test.todo('Write some tests at some point... 🤷‍♂️');

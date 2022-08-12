@@ -77,7 +77,6 @@
         "curly": "error",
         "eqeqeq": "error",
         "yoda": "error"
-        // "sort-imports": "error"
         // "new-parens": ["error", "never"],
         // "no-extra-parens": "off"
         // "no-extra-parens": [
