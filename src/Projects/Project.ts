@@ -8,7 +8,7 @@ export default abstract class Project {
     public static async handle(answers: Answers): Promise<void> {
         cmd.line();
 
-        for (const step of (new (this as unknown as DerivedProject)).steps()) {
+        for (const step of new (this as unknown as DerivedProject)().steps()) {
             await step(answers);
 
             cmd.line();
