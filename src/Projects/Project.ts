@@ -45,22 +45,27 @@ export default abstract class Project {
         });
     }
 
-    protected async updatePackageJson(answers: Answers): Promise<void> {
+    protected async updatePackageJson(answers: Answers, additional: Record<string, unknown> = {}): Promise<void> {
         await action("Updating the project's package.json", async () => {
-            await this.updateDependencyManager(answers, 'package.json');
+            await this.updateDependencyManager(answers, 'package.json', additional);
         });
     }
 
-    protected async updateComposerJson(answers: Answers): Promise<void> {
+    protected async updateComposerJson(answers: Answers, additional: Record<string, unknown> = {}): Promise<void> {
         await action("Updating the project's composer.json", async () => {
-            await this.updateDependencyManager(answers, 'composer.json');
+            await this.updateDependencyManager(answers, 'composer.json', additional);
         });
     }
 
-    protected async updateDependencyManager(answers: Answers, fileName: string): Promise<void> {
+    protected async updateDependencyManager(
+        answers: Answers,
+        fileName: string,
+        additional: Record<string, unknown> = {}
+    ): Promise<void> {
         await setInDependencyManager(`${paths.target}/${fileName}`, {
             description: answers.description,
             keywords: answers.keywords,
+            ...additional,
         });
     }
 

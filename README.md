@@ -34,6 +34,10 @@ The _ts-lib_ template is meant for creating "public TypeScript libraries that wi
 
 The _laravel-lib_ template is meant for creating "public Laravel PHP libraries that will eventually be published to the Composer registry with a MIT license".
 
+### laravel-bare-app
+
+The _laravel-bare-app_ template is meant for creating "private Laravel PHP applications, without any defined front-end framework and with a proprietary license".
+
 <!-- ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently. -->
