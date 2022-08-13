@@ -32,7 +32,7 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            static fn (string $modelName): string => '{vendor-namespace}\\{project-classname}\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            static fn (string $modelName): string => 'VicGutt\\LaravelStubs\\Database\\Factories\\' . class_basename($modelName) . 'Factory',
         );
     }
 }
