@@ -24,11 +24,15 @@ From there simply answer the questions asked and choose the template to scaffold
 
 ## Templates
 
-So far, only one template is included: `ts-lib`.
+Templates are simply directories of files and folders representing a project structure for a given usecase.
 
-The _ts-lib_ template is meant for creating "public TypeScript libraries that will eventually be published to NPM with a MIT license".
+### ts-lib
 
-Other templates for _Laravel + TypeScript + Tailwind_ and _Vue + TypeScript + Tailwind_ should follow at some point.
+The _ts-lib_ template is meant for creating "public TypeScript libraries that will eventually be published to the NPM registry with a MIT license".
+
+### laravel-lib
+
+The _laravel-lib_ template is meant for creating "public Laravel PHP libraries that will eventually be published to the Composer registry with a MIT license".
 
 <!-- ## Changelog
 
