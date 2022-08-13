@@ -53,7 +53,6 @@ cmd.line();
 inquirer.prompt(questions).then(async (raw: AnswersRaw) => {
     const answers: Answers = {
         ...raw,
-        name: str.slug(raw.name),
         keywords: raw.keywords
             ? raw.keywords
                   .split(',')

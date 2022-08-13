@@ -11,7 +11,7 @@ module.exports = {
         // ...
     },
     plugins: [
-        require('@vicgutt/{project-name}')({
+        require('@{vendor-slug}/{project-slug}')({
             // ...
         }),
     ],
@@ -29,11 +29,11 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit.
 Install the package via NPM _(or yarn)_:
 
 ```bash
-npm i @vicgutt/{project-name}
+npm i @{vendor-slug}/{project-slug}
 ```
 
 ```bash
-yarn add @vicgutt/{project-name}
+yarn add @{vendor-slug}/{project-slug}
 ```
 
 Then add the plugin to your tailwind.config.js file:
@@ -46,7 +46,7 @@ module.exports = {
         // ...
     },
     plugins: [
-        require('@vicgutt/{project-name}'),
+        require('@{vendor-slug}/{project-slug}'),
         // ...
     ],
 };
@@ -70,7 +70,7 @@ Here's an example of how those options can be used:
 module.exports = {
     // ...
     plugins: [
-        require('@vicgutt/{project-name}')({
+        require('@{vendor-slug}/{project-slug}')({
             // ...
         }),
     ],
@@ -109,7 +109,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 ## Contributing
 
-If you're interested in contributing to the project, please read our [contributing docs](https://github.com/VicGUTT/{project-name}/blob/main/.github/CONTRIBUTING.md) **before submitting a pull request**.
+If you're interested in contributing to the project, please read our [contributing docs](https://github.com/{vendor-slug}/{project-slug}/blob/main/.github/CONTRIBUTING.md) **before submitting a pull request**.
 
 ## License
 
