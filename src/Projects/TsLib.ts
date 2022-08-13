@@ -1,9 +1,7 @@
-import { type ProjectStep, type Answers } from '../types';
+import { type ProjectStep } from '../types';
 import Project from './Project.js';
 import paths from '../utils/paths.js';
 import cmd from '../utils/cmd.js';
-import action from '../utils/action.js';
-import setInDependencyManager from '../utils/setInDependencyManager.js';
 
 export default class TsLit extends Project {
     public steps(): ProjectStep[] {
@@ -15,15 +13,6 @@ export default class TsLit extends Project {
             this.installDependencies,
             this.commitGit,
         ];
-    }
-
-    protected async updatePackageJson(answers: Answers): Promise<void> {
-        await action("Updating the project's package.json", async () => {
-            await setInDependencyManager(`${paths.target}/package.json`, {
-                description: answers.description,
-                keywords: answers.keywords,
-            });
-        });
     }
 
     protected async installDependencies(): Promise<void> {

@@ -7,10 +7,11 @@ import action from '../utils/action.js';
 import copyDir from '../utils/copyDir.js';
 import replaceInDirectory from '../utils/replaceInDirectory.js';
 import renameInDirectory from '../utils/renameInDirectory.js';
+import setInDependencyManager from '../utils/setInDependencyManager.js';
 
 export default abstract class Project {
-    protected CACHE: Record<string, unknown> =  {};
-    
+    protected CACHE: Record<string, unknown> = {};
+
     // public abstract init(): void;
     public abstract steps(): ProjectStep[];
 
@@ -44,6 +45,25 @@ export default abstract class Project {
         });
     }
 
+    protected async updatePackageJson(answers: Answers): Promise<void> {
+        await action("Updating the project's package.json", async () => {
+            await this.updateDependencyManager(answers, 'package.json');
+        });
+    }
+
+    protected async updateComposerJson(answers: Answers): Promise<void> {
+        await action("Updating the project's composer.json", async () => {
+            await this.updateDependencyManager(answers, 'composer.json');
+        });
+    }
+
+    protected async updateDependencyManager(answers: Answers, fileName: string): Promise<void> {
+        await setInDependencyManager(`${paths.target}/${fileName}`, {
+            description: answers.description,
+            keywords: answers.keywords,
+        });
+    }
+
     protected async setupGit(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.git.setup();
@@ -53,7 +73,7 @@ export default abstract class Project {
         if (this.CACHE['replaceableTokens']) {
             return this.CACHE['replaceableTokens'] as Record<string, string>;
         }
-        
+
         const vendorName = constants.VENDOR_NAME;
         const projectName = answers.name;
 
