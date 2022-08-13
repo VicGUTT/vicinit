@@ -46,10 +46,13 @@
         }
     },
     "scripts": {
-        "analyse": "vendor/bin/phpstan analyse",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=1G",
+        "lint": "composer analyse",
         "test": "vendor/bin/pest",
         "test:coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/pint —test",
+        "format:fix": "vendor/bin/pint",
+        "fix": "composer format:fix"
     },
     "config": {
         "sort-packages": true,

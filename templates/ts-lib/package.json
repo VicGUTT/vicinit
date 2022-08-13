@@ -47,6 +47,7 @@
         "test:watch": "vitest watch",
         "test:coverage": "vitest run --coverage",
         "test:watch:index": "vitest watch --testNamePattern=index",
+        "test:watch:utils": "vitest watch --testNamePattern=^utils/",
         "test:watch:[filtered]": "vitest watch --testNamePattern=someTestName",
         "------------------------------------- | LINT | -------------------------------------": "",
         "lint": "eslint . --max-warnings=0",

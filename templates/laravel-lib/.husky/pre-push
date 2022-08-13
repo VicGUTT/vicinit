@@ -2,5 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 composer format
-composer analyse
+composer lint
 composer test
