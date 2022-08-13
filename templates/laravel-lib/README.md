@@ -1,4 +1,3 @@
-
 # {project-description}
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/{vendor-slug}/{project-slug}.svg?style=flat-square)](https://packagist.org/packages/{vendor-slug}/{project-slug})
@@ -72,8 +71,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [{author-name}](https://github.com/{author-username})
-- [All Contributors](../../contributors)
+-   [{author-name}](https://github.com/{author-username})
+-   [All Contributors](../../contributors)
 
 ## License
 
