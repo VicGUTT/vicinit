@@ -1,0 +1,17 @@
+*.vic
+_ide_helper_models.php
+_ide_helper.php
+package-lock.json
+composer.lock
+/.vic
+/.vscode
+/bootstrap
+/config
+# /database
+/node_modules
+/public
+/resources/tests/vitest/.coverage
+/resources/tests/playwright/.test-results
+/storage
+/stubs
+/vendor

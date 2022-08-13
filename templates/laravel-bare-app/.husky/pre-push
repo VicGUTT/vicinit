@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+composer format
+composer lint
+composer test
+
+npm run lint
+npm run format
+# npm run test
+# npm run pw

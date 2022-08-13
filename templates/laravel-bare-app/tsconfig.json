@@ -1,0 +1,40 @@
+{
+    "include": ["./resources/ts"],
+    "compilerOptions": {
+        "types": ["vite/client", "node"],
+
+        "target": "ESNEXT",
+        "module": "ESNext",
+        "lib": ["ESNext", "DOM"],
+        "moduleResolution": "Node",
+        "strict": true,
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "isolatedModules": true,
+
+        "importHelpers": true,
+        "declaration": false,
+        "rootDir": "./resources",
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
+        "allowJs": true,
+
+        "outDir": "./public/build",
+
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["./*"],
+            "@/*": ["resources/ts/*"],
+            "@vicgutt/isjs/*": ["./node_modules/@vicgutt/isjs/dist/*"],
+            "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"],
+            "@vicgutt/macrojs/*": ["./node_modules/@vicgutt/macrojs/dist/*"]
+        }
+    }
+}

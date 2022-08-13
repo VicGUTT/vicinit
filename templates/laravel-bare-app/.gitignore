@@ -1,0 +1,25 @@
+.env
+.env.production
+.env.staging
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+.npmrc
+npm-debug.log
+yarn-error.log
+*.vic
+/node_modules
+# /public/build
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/.vic
+/.idea
+/.vscode
+/resources/tests/vitest/.coverage
+/resources/tests/playwright/.test-results
+/playwright-report/
+/playwright/.cache/

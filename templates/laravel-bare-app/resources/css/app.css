@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Setup
+------------------------------------------------*/
+
+@layer base {
+    :root {
+        accent-color: theme('colors.primary.500');
+        color-scheme: light dark;
+    }
+
+    :root.dark {
+        color-scheme: dark;
+    }
+
+    /* Set up Mulish for modern browsers, all weights */
+    @supports (font-variation-settings: normal) {
+        @font-face {
+            font-family: 'Mulish';
+            font-display: swap; /* auto | block | swap | fallback | optional */
+            src: 
+                /*
+                    local('Muli'),
+                    local('muli'),
+                    local('Mulish'),
+                    local('mulish'),
+                */ url('~/public/fonts/mulish.ttf')
+                    format('truetype supports variations'),
+                url('~/public/fonts/mulish.ttf') format('truetype-variations');
+            font-weight: 100 900;
+            font-stretch: 25% 151%;
+        }
+    }
+}
+
+@layer components {
+
+    /* Scrollbar
+    ------------------------------------------------*/
+
+    .scrollbar::-webkit-scrollbar {
+        @apply h-4 w-4;
+    }
+    .scrollbar::-webkit-scrollbar-button {
+        display: none;
+        height: 0;
+        width: 0;
+    }
+    .scrollbar::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+    .scrollbar::-webkit-scrollbar-thumb {
+        @apply bg-gray-300 dark:bg-gray-600;
+    }
+    :is(html.dark.scrollbar)::-webkit-scrollbar-thumb {
+        @apply bg-gray-600;
+    }
+    .scrollbar::-webkit-scrollbar-thumb:hover,
+    :is(html.dark.scrollbar)::-webkit-scrollbar-thumb:hover {
+        @apply bg-primary-500;
+    }
+    .scrollbar::-webkit-scrollbar-thumb,
+    .scrollbar::-webkit-scrollbar-track {
+        background-clip: padding-box;
+        border: 4px solid transparent;
+        border-radius: 8px;
+    }
+    .scrollbar::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    .scrollbar:where(.scrollbar\:\:size\:\:sm)::-webkit-scrollbar {
+        @apply w-3 h-3;
+    }
+    .scrollbar:where(.scrollbar\:\:size\:\:md)::-webkit-scrollbar {
+        @apply w-[.875rem] h-[.875rem];
+    }
+    .scrollbar:where(.scrollbar\:\:size\:\:lg)::-webkit-scrollbar {
+        @apply w-4 h-4;
+    }
+}
