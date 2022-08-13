@@ -1,29 +1,24 @@
 import fs from 'fs';
 import is from '@vicgutt/isjs';
+import promisify from './promisify.js';
 
 export default function setInDependencyManager(filePath: string, values: Record<string, unknown>): Promise<void> {
-    return new Promise((resolve, reject) => {
-        try {
-            const meta = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return promisify(() => {
+        const meta = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
-            Object.entries(values).forEach(([key, value]) => {
-                value = sanitize(value);
+        Object.entries(values).forEach(([key, value]) => {
+            value = sanitize(value);
 
-                if (is.empty(value)) {
-                    delete meta[key];
+            if (is.empty(value)) {
+                delete meta[key];
 
-                    return;
-                }
+                return;
+            }
 
-                meta[key] = value;
-            });
+            meta[key] = value;
+        });
 
-            fs.writeFileSync(filePath, JSON.stringify(meta, null, 4));
-
-            resolve();
-        } catch (error) {
-            reject(error);
-        }
+        fs.writeFileSync(filePath, JSON.stringify(meta, null, 4));
     });
 }
 

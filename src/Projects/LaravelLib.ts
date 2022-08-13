@@ -4,6 +4,7 @@ import Project from './Project.js';
 import paths from '../utils/paths.js';
 import cmd from '../utils/cmd.js';
 import renameFile from '../utils/renameFile.js';
+import promisify from '../utils/promisify.js';
 
 export default class LaravelLib extends Project {
     public steps(): ProjectStep[] {
@@ -26,19 +27,15 @@ export default class LaravelLib extends Project {
      * Let try to abide by that convention.
      */
     protected async updateConfigFileIfNecessary(answers: Answers): Promise<void> {
-        return new Promise((resolve, reject) => {
-            try {
-                const projectSlug = this.getReplaceableTokens(answers)['{project-slug}'];
-                const prefix = 'laravel-';
+        return promisify(() => {
+            const projectSlug = this.getReplaceableTokens(answers)['{project-slug}'];
+            const prefix = 'laravel-';
 
-                if (projectSlug.startsWith(prefix)) {
-                    renameFile(`${paths.target}/config/${projectSlug}.php`, str.after(projectSlug, prefix));
-                }
-
-                resolve();
-            } catch (error) {
-                reject(error);
+            if (!projectSlug.startsWith(prefix)) {
+                return;
             }
+
+            renameFile(`${paths.target}/config/${projectSlug}.php`, str.after(projectSlug, prefix));
         });
     }
 

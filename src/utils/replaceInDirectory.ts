@@ -1,32 +1,27 @@
 import fs from 'fs';
 import path from 'path';
 import replaceInFile from './replaceInFile.js';
+import promisify from './promisify.js';
 
 export default function replaceInDirectory(dirPath: string, replacements: Record<string, string>): Promise<void> {
-    return new Promise((resolve, reject) => {
-        try {
-            const excludes = ['.git', 'vendor', 'node_modules'];
-            const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    return promisify(() => {
+        const excludes = ['.git', 'vendor', 'node_modules'];
+        const entries = fs.readdirSync(dirPath, { withFileTypes: true });
 
-            entries.forEach((entry) => {
-                if (excludes.includes(entry.name)) {
-                    return;
-                }
-                
-                const srcPath = path.join(dirPath, entry.name);
+        entries.forEach((entry) => {
+            if (excludes.includes(entry.name)) {
+                return;
+            }
 
-                if (entry.isDirectory()) {
-                    replaceInDirectory(srcPath, replacements);
+            const srcPath = path.join(dirPath, entry.name);
 
-                    return;
-                }
+            if (entry.isDirectory()) {
+                replaceInDirectory(srcPath, replacements);
 
-                replaceInFile(srcPath, replacements);
-            });
+                return;
+            }
 
-            resolve();
-        } catch (error) {
-            reject(error);
-        }
+            replaceInFile(srcPath, replacements);
+        });
     });
 }
