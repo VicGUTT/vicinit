@@ -47,7 +47,7 @@ export default class LaravelLib extends Project {
 
     protected async formatProject(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`composer format`);
+        await cmd.run(`composer fix`);
     }
 
     protected async commitGit(): Promise<void> {

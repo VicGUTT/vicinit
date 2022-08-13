@@ -112,7 +112,7 @@ export default class LaravelBareApp extends Project {
 
     protected async formatProject(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`composer format`);
+        await cmd.run(`composer fix`);
         await cmd.run(`npm run fix`);
         await cmd.run(`npm run format:fix`);
     }
