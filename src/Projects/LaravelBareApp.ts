@@ -48,7 +48,7 @@ export default class LaravelBareApp extends Project {
                 test: 'php artisan test',
                 'test:coverage': 'php artisan test --coverage',
 
-                format: 'vendor/bin/pint —test',
+                format: 'vendor/bin/pint --test',
                 'format:fix': 'vendor/bin/pint',
                 fix: 'composer format:fix',
 

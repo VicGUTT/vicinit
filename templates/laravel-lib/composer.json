@@ -50,7 +50,7 @@
         "lint": "composer analyse",
         "test": "vendor/bin/pest",
         "test:coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint —test",
+        "format": "vendor/bin/pint --test",
         "format:fix": "vendor/bin/pint",
         "fix": "composer format:fix"
     },
