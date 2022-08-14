@@ -105,11 +105,20 @@ This will produce the following CSS:
 
 <!-- ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently. -->
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently. -->
 
 ## Contributing
 
 If you're interested in contributing to the project, please read our [contributing docs](https://github.com/{vendor-slug}/{project-slug}/blob/main/.github/CONTRIBUTING.md) **before submitting a pull request**.
+
+## Security Vulnerabilities
+
+Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+
+## Credits
+
+-   [{author-name}](https://github.com/{author-username})
+-   [All Contributors](../../contributors)
 
 ## License
 
