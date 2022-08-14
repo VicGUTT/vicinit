@@ -3,6 +3,6 @@
 
 npx --no-install lint-staged
 npm run lint
-npm run format
+# npm run format
 # npm run size
 # npm run test
