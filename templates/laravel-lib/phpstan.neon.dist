@@ -16,7 +16,7 @@ parameters:
     # excludePaths:
     #     - ./*/*/FileToBeExcluded.php
 
-    tmpDir: build/phpstan
+    tmpDir: .results/phpstan
 
     checkModelProperties: true
     checkOctaneCompatibility: true

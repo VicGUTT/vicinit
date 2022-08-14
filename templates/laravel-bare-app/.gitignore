@@ -19,6 +19,7 @@ yarn-error.log
 /.vic
 /.idea
 /.vscode
+/.results
 /resources/tests/vitest/.coverage
 /resources/tests/playwright/.test-results
 /playwright-report/

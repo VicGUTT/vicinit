@@ -13,6 +13,7 @@ testbench.yaml
 /dist-ssr
 /coverage
 /.coverage
+/.results
 /.temp
 /.vic
 *.vic

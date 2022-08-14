@@ -16,6 +16,8 @@ parameters:
     # excludePaths:
     #     - ./*/*/FileToBeExcluded.php
 
+    tmpDir: .results/phpstan
+
     checkModelProperties: true
     checkOctaneCompatibility: true
     checkMissingIterableValueType: false
