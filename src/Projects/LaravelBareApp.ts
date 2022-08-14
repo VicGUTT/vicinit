@@ -22,6 +22,7 @@ export default class LaravelBareApp extends Project {
             this.installDependencies,
             this.formatProject,
             this.commitGit,
+            this.openInVsCode,
         ];
     }
 
@@ -53,6 +54,8 @@ export default class LaravelBareApp extends Project {
                 fix: 'composer format:fix',
 
                 ...data.scripts,
+
+                'post-update-cmd': ['@php artisan stub:publish', ...(data.scripts['post-update-cmd'] ?? [])],
             },
             config: {
                 ...data.config,
@@ -87,7 +90,7 @@ export default class LaravelBareApp extends Project {
 
     protected async generateAppKey(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`php artisan key:generate`);
+        await cmd.run(`php artisan key:generate --ansi`);
     }
 
     protected async requireComposerDependencies(): Promise<void> {
@@ -117,10 +120,6 @@ export default class LaravelBareApp extends Project {
         await cmd.run(`npm run format:fix`);
     }
 
-    protected async commitGit(): Promise<void> {
-        await cmd.git.save('feat: setup');
-    }
-
     protected async getPhpVersion(): Promise<number> {
         return +str(await exec(`php -v`))
             .between('PHP', '(cli)')
@@ -130,7 +129,7 @@ export default class LaravelBareApp extends Project {
 
     protected getComposerDependenciesToRequire() {
         return {
-            regular: [],
+            regular: ['vicgutt/laravel-stubs'],
             dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'nunomaduro/larastan'],
         };
     }

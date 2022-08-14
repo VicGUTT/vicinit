@@ -12,15 +12,12 @@ export default class TsLit extends Project {
             this.setupGit,
             this.installDependencies,
             this.commitGit,
+            this.openInVsCode,
         ];
     }
 
     protected async installDependencies(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.run(`npm i`);
-    }
-
-    protected async commitGit(): Promise<void> {
-        await cmd.git.save('feat: installed dependencies');
     }
 }

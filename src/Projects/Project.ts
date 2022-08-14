@@ -74,6 +74,14 @@ export default abstract class Project {
         await cmd.git.setup();
     }
 
+    protected async commitGit(): Promise<void> {
+        await cmd.git.save('feat: setup');
+    }
+
+    protected async openInVsCode(): Promise<void> {
+        await cmd.run(`code ${paths.target}`);
+    }
+
     protected getReplaceableTokens(answers: Answers): Record<string, string> {
         if (this.CACHE['replaceableTokens']) {
             return this.CACHE['replaceableTokens'] as Record<string, string>;

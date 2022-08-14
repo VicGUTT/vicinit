@@ -18,6 +18,7 @@ export default class LaravelLib extends Project {
             this.installDependencies,
             this.formatProject,
             this.commitGit,
+            this.openInVsCode,
         ];
     }
 
@@ -48,9 +49,5 @@ export default class LaravelLib extends Project {
     protected async formatProject(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.run(`composer fix`);
-    }
-
-    protected async commitGit(): Promise<void> {
-        await cmd.git.save('feat: setup');
     }
 }
