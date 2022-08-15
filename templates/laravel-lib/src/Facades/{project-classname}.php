@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @see \{vendor-namespace}\{project-classname}\{project-classname}
  */
-final class {project-classname} extends Facade
+class {project-classname} extends Facade
 {
     /**
      * Get the registered name of the component.

@@ -8,7 +8,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use {vendor-namespace}\{project-classname}\Commands\{project-classname}Command;
 
-final class {project-classname}ServiceProvider extends PackageServiceProvider
+class {project-classname}ServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {

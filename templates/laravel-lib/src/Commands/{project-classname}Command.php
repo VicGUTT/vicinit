@@ -6,7 +6,7 @@ namespace {vendor-namespace}\{project-classname}\Commands;
 
 use Illuminate\Console\Command;
 
-final class {project-classname}Command extends Command
+class {project-classname}Command extends Command
 {
     /**
      * The name and signature of the console command.

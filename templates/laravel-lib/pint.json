@@ -3,7 +3,7 @@
     "exclude": ["tests/Fixtures", "build"],
     "rules": {
         "declare_strict_types": true,
-        "final_class": true,
+        "final_class": false,
         "static_lambda": false,
         "string_line_ending": true,
         "date_time_immutable": true,
