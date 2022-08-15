@@ -28,6 +28,7 @@ export default abstract class Project {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected async init(_: Answers): Promise<void> {
         //
     }

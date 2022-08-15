@@ -25,7 +25,7 @@ export default class LaravelLib extends Project {
     protected async init(answers: Answers): Promise<void> {
         return promisify(() => {
             const projectName = str(answers.name).lower();
-            
+
             if (!projectName.startsWith('laravel')) {
                 return;
             }
