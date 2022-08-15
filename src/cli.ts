@@ -2,7 +2,7 @@
 
 import { type Answers, type AnswersRaw } from './types';
 import fs from 'fs';
-import inquirer from 'inquirer';
+import inquirer, { type QuestionCollection } from 'inquirer';
 import str from '@vicgutt/strjs';
 import projects from './Projects/index.js';
 import paths from './utils/paths.js';
@@ -10,11 +10,14 @@ import cmd from './utils/cmd.js';
 
 const templates = fs.readdirSync(paths.templates);
 
-const questions = [
+const questions: QuestionCollection = [
     {
         type: 'input',
         name: 'name',
         message: 'Please enter a name (required) :',
+        default() {
+            return str.basename(process.cwd());
+        },
         validate(value: string) {
             if (value.trim().length) {
                 return true;
@@ -50,7 +53,7 @@ const questions = [
 cmd.info('Please ensure you have already created and changed into the directory that will host your new project.');
 cmd.line();
 
-inquirer.prompt(questions).then(async (raw: AnswersRaw) => {
+inquirer.prompt<AnswersRaw>(questions).then(async (raw: AnswersRaw) => {
     const answers: Answers = {
         ...raw,
         keywords: raw.keywords
