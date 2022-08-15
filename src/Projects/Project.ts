@@ -12,7 +12,6 @@ import setInDependencyManager from '../utils/setInDependencyManager.js';
 export default abstract class Project {
     protected CACHE: Record<string, unknown> = {};
 
-    // public abstract init(): void;
     public abstract steps(): ProjectStep[];
 
     public static async handle(answers: Answers): Promise<void> {
@@ -20,11 +19,17 @@ export default abstract class Project {
 
         const instance = new (this as unknown as DerivedProject)();
 
+        await instance.init(answers);
+
         for (const step of instance.steps()) {
             await step.bind(instance)(answers);
 
             cmd.line();
         }
+    }
+
+    protected async init(_: Answers): Promise<void> {
+        //
     }
 
     protected async copyTemplateDirectoryToTarget(answers: Answers): Promise<void> {
@@ -95,9 +100,11 @@ export default abstract class Project {
             '{author-email}': constants.AUTHOR_EMAIL,
             '{author-username}': constants.AUTHOR_USERNAME,
             '{author-url}': constants.AUTHOR_URL,
+
             '{vendor-name}': vendorName,
             '{vendor-namespace}': constants.VENDOR_NAMESPACE,
             '{vendor-slug}': str.slug(vendorName),
+
             '{project-name}': projectName,
             '{project-description}': answers.description + '',
             '{project-slug}': str.slug(projectName),

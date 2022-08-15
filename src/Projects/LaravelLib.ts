@@ -22,6 +22,26 @@ export default class LaravelLib extends Project {
         ];
     }
 
+    protected async init(answers: Answers): Promise<void> {
+        return promisify(() => {
+            const projectName = str(answers.name).lower();
+            
+            if (!projectName.startsWith('laravel')) {
+                return;
+            }
+
+            this.getReplaceableTokens(answers);
+
+            const cached = this.CACHE['replaceableTokens'] as ReturnType<typeof this.getReplaceableTokens>;
+            const name = projectName.after('laravel').trim();
+
+            cached['{project-classname}'] = name.studly().raw();
+            cached['{project-classname-variable}'] = name.camel().raw();
+
+            this.CACHE['replaceableTokens'] = cached;
+        });
+    }
+
     /**
      * Spatie's "laravel-package-tools" expects the config file to
      * not be prefixed with "laravel-" by default.
