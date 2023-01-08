@@ -5,17 +5,15 @@ const colors = require('tailwindcss/colors');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     presets: [
-        require('@vicgutt/tailwindcss-opinionated-preset')(
-            {
-                plugins: {
-                    colors: {
-                        primary: colors.pink,
-                        secondary: colors.amber,
-                        tertiary: colors.sky,
-                    },
+        require('@vicgutt/tailwindcss-opinionated-preset')({
+            plugins: {
+                colors: {
+                    primary: colors.pink,
+                    secondary: colors.amber,
+                    tertiary: colors.sky,
                 },
-            }
-        ),
+            },
+        }),
     ],
 };
 

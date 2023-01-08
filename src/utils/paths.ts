@@ -1,4 +1,4 @@
-import { type Paths } from '../types';
+import { type Paths } from '../types/index.js';
 import path from 'path';
 
 const dirname = import.meta.url.replace('file:///', '');

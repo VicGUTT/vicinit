@@ -1,4 +1,4 @@
-import { type ProjectStep, type Answers } from '../types';
+import { type ProjectStep, type Answers } from '../types/index.js';
 import str from '@vicgutt/strjs';
 import Project from './Project.js';
 import paths from '../utils/paths.js';

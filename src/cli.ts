@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import { type Answers, type AnswersRaw } from './types';
+import { type Answers, type AnswersRaw } from './types/index.js';
 import fs from 'fs';
 import inquirer, { type QuestionCollection } from 'inquirer';
 import str from '@vicgutt/strjs';

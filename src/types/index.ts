@@ -1,4 +1,4 @@
-import type Project from '../Projects/Project';
+import type Project from '../Projects/Project.js';
 
 export type Paths = {
     root: string;
