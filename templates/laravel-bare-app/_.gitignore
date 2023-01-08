@@ -19,6 +19,7 @@ yarn-error.log
 /.vic
 /.idea
 /.vscode
+/.fleet
 /.results
 /resources/tests/vitest/.coverage
 /resources/tests/playwright/.test-results

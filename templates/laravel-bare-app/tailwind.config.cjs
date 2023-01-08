@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const colors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 const defaultTheme = require('tailwindcss/defaultTheme');
@@ -30,6 +32,7 @@ module.exports = {
                 primary: colors.pink,
                 secondary: colors.amber,
                 tertiary: colors.sky,
+                app: colors.gray,
 
                 // Contextual colors
                 info: colors.blue,
@@ -76,6 +79,7 @@ module.exports = {
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
+        require('@tailwindcss/container-queries'),
         require('@tailwindcss/line-clamp'),
         require('@vicgutt/tailwindcss-debug'),
         // require('@vicgutt/tailwindcss-feature-detection')(
@@ -94,3 +98,5 @@ module.exports = {
         }),
     ],
 };
+
+/* eslint-enable @typescript-eslint/no-var-requires */

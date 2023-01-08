@@ -9,6 +9,7 @@
     "plugins": ["@typescript-eslint"],
     "extends": [
         "eslint:recommended",
+        "plugin:n/recommended",
         "plugin:eslint-comments/recommended",
         "plugin:jsonc/recommended-with-jsonc",
         "plugin:@typescript-eslint/eslint-recommended",
@@ -33,11 +34,11 @@
                             "license",
                             "keywords",
 
+                            "type",
                             "main",
                             "module",
                             "types",
                             "typings",
-                            "type",
                             "exports",
                             "files",
                             "engines",

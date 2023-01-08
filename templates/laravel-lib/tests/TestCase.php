@@ -10,6 +10,11 @@ use {vendor-namespace}\{project-classname}\{project-classname}ServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     */
     public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');
@@ -20,6 +25,12 @@ abstract class TestCase extends Orchestra
         */
     }
 
+    /**
+     * Get package providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array<int, class-string>
+     */
     protected function getPackageProviders($app): array
     {
         return [
@@ -27,6 +38,9 @@ abstract class TestCase extends Orchestra
         ];
     }
 
+    /**
+     * This method is called before each test.
+     */
     protected function setUp(): void
     {
         parent::setUp();

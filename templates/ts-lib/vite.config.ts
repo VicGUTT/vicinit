@@ -13,7 +13,7 @@ export default defineConfig({
         /**
          * @see https://vitejs.dev/config/#build-target
          */
-        target: `es${year - 2 < 2021 ? 2021 : year - 2}`,
+        target: `es${year - 2}`,
 
         /**
          * @see https://vitejs.dev/config/#build-chunksizewarninglimit
@@ -38,7 +38,7 @@ export default defineConfig({
                 .split('-')
                 .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`)
                 .join(''),
-            fileName: (format) => `${libName}.${format}.js`,
+            fileName: (format) => `_${libName}.${format}.${format === 'umd' ? 'c' : ''}js`,
         },
     },
     /**

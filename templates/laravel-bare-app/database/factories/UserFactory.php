@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 final class UserFactory extends Factory
 {
+    public const DUMMY_PASSWORD = '0000';
+
     /**
      * Define the model's default state.
      */
@@ -22,7 +24,7 @@ final class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => Hash::make('0000'),
+            'password' => Hash::make(self::DUMMY_PASSWORD),
             'remember_token' => Str::random(10),
         ];
     }
@@ -33,10 +35,8 @@ final class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(static function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
-        });
+        return $this->state(static fn (array $attributes): array => [
+            'email_verified_at' => null,
+        ]);
     }
 }

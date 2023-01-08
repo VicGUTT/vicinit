@@ -9,6 +9,7 @@
     "plugins": ["@typescript-eslint"],
     "extends": [
         "eslint:recommended",
+        "plugin:n/recommended",
         "plugin:eslint-comments/recommended",
         "plugin:jsonc/recommended-with-jsonc",
         "plugin:@typescript-eslint/eslint-recommended",
@@ -33,11 +34,11 @@
                             "license",
                             "keywords",
 
+                            "type",
                             "main",
                             "module",
                             "types",
                             "typings",
-                            "type",
                             "exports",
                             "files",
                             "engines",
@@ -76,7 +77,7 @@
     "rules": {
         "curly": "error",
         "eqeqeq": "error",
-        "yoda": "error",
+        "yoda": "error"
         // "new-parens": ["error", "never"],
         // "no-extra-parens": "off"
         // "no-extra-parens": [
@@ -90,9 +91,5 @@
         //         "enforceForFunctionPrototypeMethods": false
         //     }
         // ]
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/no-var-requires": "off",
-        "@typescript-eslint/no-empty-function": "off"
     }
 }

@@ -22,8 +22,8 @@ export default defineConfig({
          */
         watchAndRun([
             {
-                name: 'ide-helper:models -M',
-                run: 'php artisan ide-helper:models -M',
+                name: 'ide-helper:models -W', //  -M
+                run: 'php artisan ide-helper:models -W', //  -M
                 watch: path.resolve('app/Models/**/*.php').replace(/\\/g, '/'),
             },
         ]),

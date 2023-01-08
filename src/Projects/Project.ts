@@ -34,8 +34,8 @@ export default abstract class Project {
     }
 
     protected async copyTemplateDirectoryToTarget(answers: Answers): Promise<void> {
-        await action('Copying the template files and directories to the target path', () => {
-            return copyDir(`${paths.templates}/${answers.template}`, paths.target);
+        await action('Copying the template files and directories to the target path', async () => {
+            await copyDir(`${paths.templates}/${answers.template}`, paths.target);
         });
     }
 

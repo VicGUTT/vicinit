@@ -7,7 +7,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ Str::title(config('app.name')) }}</title>
-        
+
         @vite(['resources/css/app.css', 'resources/ts/app.ts'])
     </head>
     <body class="antialiased font-sans selection:text-white selection:bg-primary-500">
