@@ -52,6 +52,7 @@
         "@vicgutt/tailwindcss-debug": "^0.1.0",
         "@vicgutt/tailwindcss-feature-detection": "^0.1.0",
         "@vicgutt/tailwindcss-font-face": "^0.2.0",
+        "@vicgutt/tailwindcss-opinionated-preset": "^0.0.2",
         "autoprefixer": "^10.4.7",
         "c8": "^7.12.0",
         "eslint": "^8.29.0",
