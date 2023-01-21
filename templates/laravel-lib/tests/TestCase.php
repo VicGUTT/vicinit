@@ -49,4 +49,14 @@ abstract class TestCase extends Orchestra
             static fn (string $modelName): string => 'VicGutt\\LaravelStubs\\Database\\Factories\\' . class_basename($modelName) . 'Factory',
         );
     }
+
+    protected function getTestSupportDirectory(string $path = ''): string
+    {
+        return $this->getTestDirectory("/TestSupport/{$path}");
+    }
+
+    protected function getTestDirectory(string $path = ''): string
+    {
+        return str_replace(['\\', '//'], '/', realpath(__DIR__) . '/' . $path);
+    }
 }
