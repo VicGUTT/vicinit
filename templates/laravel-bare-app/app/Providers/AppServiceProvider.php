@@ -79,7 +79,7 @@ final class AppServiceProvider extends ServiceProvider
                 $this->getBindings()
             );
 
-            return Str::replaceArray('?', $bindings->toArray(), $this->toSql());
+            return Str::replaceArray('?', $bindings, $this->toSql());
         });
     }
 
