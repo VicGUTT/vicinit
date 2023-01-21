@@ -8,7 +8,6 @@ import exec from '../utils/exec.js';
 import action from '../utils/action.js';
 import replaceInDirectory from '../utils/replaceInDirectory.js';
 import replaceInFile from '../utils/replaceInFile.js';
-import renameFile from '../utils/renameFile.js';
 
 export default class LaravelBareApp extends Project {
     public steps(): ProjectStep[] {
@@ -34,29 +33,12 @@ export default class LaravelBareApp extends Project {
     protected async createLaravelApp(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.run(`composer create-project --prefer-dist laravel/laravel .`);
+        // await cmd.run(`composer create-project --prefer-dist laravel/laravel . dev-master`); // for the latest unreleased version
     }
 
     protected async removeUnnecessaryProjectFiles(): Promise<void> {
         await cmd.run(`rm "${paths.target}/vite.config.js"`);
         await cmd.run(`rm -rf "${paths.target}/resources/js"`);
-    }
-
-    protected async renameGitignore(): Promise<void> {
-        /**
-         * When building for prod, NPM will take into account the contents
-         * of the `.gitignore` file to know which files and folders to not
-         * include in the final bundle.
-         * As the Laravel app template's `.gitignore` includes files we
-         * actually want in the final bundle such as the `.env` file, we
-         * had to give the `.gitignore` a temporary name, then rename it
-         * once the files has been copied over to the currently creating project.
-         *
-         * The second parameter here is an empty string, because `renameFile`
-         * attempts to detect and append the file extension. If the second
-         * parameter were to be `.gitignore` then the resulting file name
-         * would be `.gitignore.gitignore`.
-         */
-        renameFile(`${paths.target}/_.gitignore`, '');
     }
 
     protected async updateComposerJson(answers: Answers): Promise<void> {

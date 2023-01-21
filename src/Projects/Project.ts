@@ -8,6 +8,7 @@ import copyDir from '../utils/copyDir.js';
 import replaceInDirectory from '../utils/replaceInDirectory.js';
 import renameInDirectory from '../utils/renameInDirectory.js';
 import setInDependencyManager from '../utils/setInDependencyManager.js';
+import renameFile from '../utils/renameFile.js';
 
 export default abstract class Project {
     protected CACHE: Record<string, unknown> = {};
@@ -37,6 +38,24 @@ export default abstract class Project {
         await action('Copying the template files and directories to the target path', async () => {
             await copyDir(`${paths.templates}/${answers.template}`, paths.target);
         });
+    }
+
+    protected async renameGitignore(): Promise<void> {
+        /**
+         * When building for prod, NPM will take into account the contents
+         * of the `.gitignore` file to know which files and folders to not
+         * include in the final bundle.
+         * As the Laravel app template's `.gitignore` includes files we
+         * actually want in the final bundle such as the `.env` file, we
+         * had to give the `.gitignore` a temporary name, then rename it
+         * once the files has been copied over to the currently creating project.
+         *
+         * The second parameter here is an empty string, because `renameFile`
+         * attempts to detect and append the file extension. If the second
+         * parameter were to be `.gitignore` then the resulting file name
+         * would be `.gitignore.gitignore`.
+         */
+        renameFile(`${paths.target}/_.gitignore`, '');
     }
 
     protected async updateProjectFiles(answers: Answers): Promise<void> {
