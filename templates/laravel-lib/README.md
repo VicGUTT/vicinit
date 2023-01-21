@@ -1,8 +1,14 @@
 # {project-description}
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/{vendor-slug}/{project-slug}.svg?style=flat-square)](https://packagist.org/packages/{vendor-slug}/{project-slug})
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/{vendor-slug}/{project-slug}/run-tests?label=tests)](https://github.com/{vendor-slug}/{project-slug}/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/{vendor-slug}/{project-slug}/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/{vendor-slug}/{project-slug}/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/{vendor-slug}/{project-slug}/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/{vendor-slug}/{project-slug}/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/{vendor-slug}/{project-slug}/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/{vendor-slug}/{project-slug}/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/{vendor-slug}/{project-slug}.svg?style=flat-square)](https://packagist.org/packages/{vendor-slug}/{project-slug})
+
+[![GitHub Tests Action Status](https://github.com/{vendor-slug}/{project-slug}/actions/workflows/run-tests.yml/badge.svg)](https://github.com/{vendor-slug}/{project-slug}/actions/workflows/run-tests.yml)
+[![GitHub PHPStan Action Status](https://github.com/{vendor-slug}/{project-slug}/actions/workflows/phpstan.yml/badge.svg)](https://github.com/{vendor-slug}/{project-slug}/actions/workflows/phpstan.yml)
+[![GitHub Code Style Action Status](https://github.com/{vendor-slug}/{project-slug}/actions/workflows/fix-php-code-style-issues.yml/badge.svg)](https://github.com/{vendor-slug}/{project-slug}/actions/workflows/fix-php-code-style-issues.yml)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/{vendor-slug}/{project-slug}.svg?style=flat-square)](https://packagist.org/packages/{vendor-slug}/{project-slug})
 [![Total Downloads](https://img.shields.io/packagist/dt/{vendor-slug}/{project-slug}.svg?style=flat-square)](https://packagist.org/packages/{vendor-slug}/{project-slug})
 
 ---
