@@ -10,6 +10,7 @@ export default class LaravelLib extends Project {
     public steps(): ProjectStep[] {
         return [
             this.copyTemplateDirectoryToTarget,
+            this.renameGitignore,
             this.updateProjectFiles,
             this.updateProjectFileNames,
             this.updateConfigFileIfNecessary,
@@ -45,7 +46,7 @@ export default class LaravelLib extends Project {
     /**
      * Spatie's "laravel-package-tools" expects the config file to
      * not be prefixed with "laravel-" by default.
-     * Let try to abide by that convention.
+     * Let's try to abide by that convention.
      */
     protected async updateConfigFileIfNecessary(answers: Answers): Promise<void> {
         return promisify(() => {
