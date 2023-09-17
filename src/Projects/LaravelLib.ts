@@ -1,4 +1,5 @@
 import { type ProjectStep, type Answers } from '../types/index.js';
+import fs from 'fs';
 import str from '@vicgutt/strjs';
 import Project from './Project.js';
 import paths from '../utils/paths.js';
@@ -16,6 +17,8 @@ export default class LaravelLib extends Project {
             this.updateConfigFileIfNecessary,
             this.updateComposerJson,
             this.setupGit,
+            this.installNpmDependencies,
+            this.requireComposerDependencies,
             this.installDependencies,
             this.formatProject,
             this.commitGit,
@@ -61,6 +64,18 @@ export default class LaravelLib extends Project {
         });
     }
 
+    protected async updateComposerJson(answers: Answers): Promise<void> {
+        const data = JSON.parse(fs.readFileSync(`${paths.target}/composer.json`, 'utf-8'));
+
+        await super.updateComposerJson(answers, {
+            ...data,
+            require: {
+                ...(data.require ?? {}),
+                php: `^${await this.getPhpVersion()}`,
+            },
+        });
+    }
+
     protected async installDependencies(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.run(`composer install`);
@@ -70,5 +85,30 @@ export default class LaravelLib extends Project {
     protected async formatProject(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.run(`composer fix`);
+    }
+
+    protected getNpmDependenciesToInstall() {
+        return {
+            regular: [],
+            dev: ['@commitlint/cli', '@commitlint/config-conventional', 'husky'],
+        };
+    }
+
+    protected getComposerDependenciesToRequire() {
+        return {
+            regular: ['spatie/laravel-package-tools', 'illuminate/contracts'],
+            dev: [
+                'laravel/pint',
+                'nunomaduro/collision',
+                'nunomaduro/larastan',
+                'orchestra/testbench',
+                'pestphp/pest',
+                'pestphp/pest-plugin-laravel',
+                'phpstan/extension-installer',
+                'phpstan/phpstan-deprecation-rules',
+                'phpstan/phpstan-phpunit',
+                'phpunit/phpunit',
+            ],
+        };
     }
 }

@@ -17,6 +17,10 @@ export type Answers = {
     keywords: string[] | null;
     template: AnswersRaw['template'];
 };
+export type InstallableDependencies = {
+    regular: string[];
+    dev: string[];
+};
 
 export type ProjectStep = (answers: Answers) => Promise<void>;
 // @see https://www.typescriptlang.org/docs/handbook/2/classes.html#abstract-construct-signatures

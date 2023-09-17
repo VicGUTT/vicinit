@@ -1,10 +1,8 @@
 import { type ProjectStep, type Answers } from '../types/index.js';
 import fs from 'fs';
-import str from '@vicgutt/strjs';
 import Project from './Project.js';
 import paths from '../utils/paths.js';
 import cmd from '../utils/cmd.js';
-import exec from '../utils/exec.js';
 import action from '../utils/action.js';
 import replaceInDirectory from '../utils/replaceInDirectory.js';
 import replaceInFile from '../utils/replaceInFile.js';
@@ -20,6 +18,7 @@ export default class LaravelBareApp extends Project {
             this.updateComposerJson,
             this.updateProjectFiles,
             this.generateAppKey,
+            this.installNpmDependencies,
             this.requireComposerDependencies,
             this.installDependencies,
             this.runAdditionalArtisanCommands,
@@ -107,20 +106,6 @@ export default class LaravelBareApp extends Project {
         await cmd.run(`php artisan key:generate --ansi`);
     }
 
-    protected async requireComposerDependencies(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-
-        const deps = this.getComposerDependenciesToRequire();
-
-        if (deps.regular.length) {
-            await cmd.run(`composer require ${deps.regular.join(' ')}`);
-        }
-
-        if (deps.dev.length) {
-            await cmd.run(`composer require --dev ${deps.dev.join(' ')}`);
-        }
-    }
-
     protected async installDependencies(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.run(`composer install`);
@@ -162,11 +147,46 @@ export default class LaravelBareApp extends Project {
         await cmd.run(`npm run format:fix`);
     }
 
-    protected async getPhpVersion(): Promise<number> {
-        return +str(await exec(`php -v`))
-            .between('PHP', '(cli)')
-            .trim()
-            .beforeLast('.');
+    protected getNpmDependenciesToInstall() {
+        return {
+            regular: ['@vicgutt/isjs', '@vicgutt/macrojs', '@vicgutt/strjs'],
+            dev: [
+                '@commitlint/cli',
+                '@commitlint/config-conventional',
+                '@kitql/vite-plugin-watch-and-run',
+                '@playwright/test',
+                '@tailwindcss/aspect-ratio',
+                '@tailwindcss/container-queries',
+                '@tailwindcss/forms',
+                '@tailwindcss/line-clamp',
+                '@tailwindcss/typography',
+                '@types/node',
+                '@typescript-eslint/eslint-plugin',
+                '@typescript-eslint/parser',
+                '@vicgutt/tailwindcss-debug',
+                '@vicgutt/tailwindcss-feature-detection',
+                '@vicgutt/tailwindcss-font-face',
+                '@vicgutt/tailwindcss-opinionated-preset',
+                'autoprefixer',
+                'c8',
+                'eslint',
+                'eslint-config-prettier',
+                'eslint-plugin-eslint-comments',
+                'eslint-plugin-jsonc',
+                'eslint-plugin-n',
+                'eslint-plugin-prettier',
+                'husky',
+                'laravel-vite-plugin',
+                'lint-staged',
+                'postcss',
+                'prettier',
+                'tailwindcss',
+                'tslib',
+                'typescript',
+                'vite',
+                'vitest',
+            ],
+        };
     }
 
     protected getComposerDependenciesToRequire() {

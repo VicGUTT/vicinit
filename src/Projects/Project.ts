@@ -1,8 +1,9 @@
-import { type ProjectStep, type Answers, type DerivedProject } from '../types/index.js';
+import type { ProjectStep, Answers, DerivedProject, InstallableDependencies } from '../types/index.js';
 import str from '@vicgutt/strjs';
 import constants from '../constants/index.js';
 import paths from '../utils/paths.js';
 import cmd from '../utils/cmd.js';
+import exec from '../utils/exec.js';
 import action from '../utils/action.js';
 import copyDir from '../utils/copyDir.js';
 import replaceInDirectory from '../utils/replaceInDirectory.js';
@@ -94,6 +95,34 @@ export default abstract class Project {
         });
     }
 
+    protected async installNpmDependencies(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+
+        const deps = this.getNpmDependenciesToInstall();
+
+        if (deps.regular.length) {
+            await cmd.run(`npm i ${deps.regular.join(' ')}`);
+        }
+
+        if (deps.dev.length) {
+            await cmd.run(`npm i -D ${deps.dev.join(' ')}`);
+        }
+    }
+
+    protected async requireComposerDependencies(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+
+        const deps = this.getComposerDependenciesToRequire();
+
+        if (deps.regular.length) {
+            await cmd.run(`composer require ${deps.regular.join(' ')}`);
+        }
+
+        if (deps.dev.length) {
+            await cmd.run(`composer require --dev ${deps.dev.join(' ')}`);
+        }
+    }
+
     protected async setupGit(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
         await cmd.git.setup();
@@ -133,5 +162,26 @@ export default abstract class Project {
         };
 
         return this.CACHE['replaceableTokens'] as Record<string, string>;
+    }
+
+    protected async getPhpVersion(): Promise<number> {
+        return +str(await exec(`php -v`))
+            .between('PHP', '(cli)')
+            .trim()
+            .beforeLast('.');
+    }
+
+    protected getComposerDependenciesToRequire(): InstallableDependencies {
+        return {
+            regular: [],
+            dev: [],
+        };
+    }
+
+    protected getNpmDependenciesToInstall(): InstallableDependencies {
+        return {
+            regular: [],
+            dev: [],
+        };
     }
 }

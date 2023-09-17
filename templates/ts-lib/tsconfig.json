@@ -3,10 +3,10 @@
     "compilerOptions": {
         "types": ["vite/client" /* , "vitest/globals" */, "node"],
 
-        "target": "ESNEXT",
+        "target": "ESNext",
         "module": "ESNext",
         "lib": ["ESNext", "DOM"],
-        "moduleResolution": "NodeNext",
+        "moduleResolution": "bundler",
         "strict": true,
         "strictNullChecks": true,
         "sourceMap": true,

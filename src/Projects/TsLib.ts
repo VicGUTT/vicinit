@@ -1,23 +1,48 @@
 import { type ProjectStep } from '../types/index.js';
 import Project from './Project.js';
-import paths from '../utils/paths.js';
-import cmd from '../utils/cmd.js';
 
-export default class TsLit extends Project {
+export default class TsLib extends Project {
     public steps(): ProjectStep[] {
         return [
             this.copyTemplateDirectoryToTarget,
+            this.renameGitignore,
             this.updateProjectFiles,
             this.updatePackageJson,
             this.setupGit,
-            this.installDependencies,
+            this.installNpmDependencies,
             this.commitGit,
             this.openInVsCode,
         ];
     }
 
-    protected async installDependencies(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`npm i`);
+    protected getNpmDependenciesToInstall() {
+        return {
+            regular: [],
+            dev: [
+                '@commitlint/cli',
+                '@commitlint/config-conventional',
+                '@size-limit/preset-small-lib',
+                '@types/node',
+                '@typescript-eslint/eslint-plugin',
+                '@typescript-eslint/parser',
+                'c8',
+                'eslint',
+                'eslint-config-prettier',
+                'eslint-plugin-eslint-comments',
+                'eslint-plugin-jsonc',
+                'eslint-plugin-n',
+                'eslint-plugin-prettier',
+                'husky',
+                'lint-staged',
+                'np',
+                'pinst',
+                'prettier',
+                'size-limit',
+                'tslib',
+                'typescript',
+                'vite',
+                'vitest',
+            ],
+        };
     }
 }
