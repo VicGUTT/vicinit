@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import str from '@vicgutt/strjs';
 import renameFile from './renameFile.js';
 import promisify from './promisify.js';

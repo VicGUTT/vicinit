@@ -1,5 +1,5 @@
 import { type Paths } from '../types/index.js';
-import path from 'path';
+import path from 'node:path';
 
 const dirname = import.meta.url.replace('file:///', '');
 const paths: Paths = {

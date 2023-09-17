@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import str from '@vicgutt/strjs';
 
 export default function replaceInFile(filePath: string, replacements: Record<string, string>): void {

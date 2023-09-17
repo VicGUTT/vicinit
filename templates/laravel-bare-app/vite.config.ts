@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 
-import path from 'path';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import watchAndRun from '@kitql/vite-plugin-watch-and-run';

@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import { type Answers, type AnswersRaw } from './types/index.js';
-import fs from 'fs';
+import fs from 'node:fs';
 import inquirer, { type QuestionCollection } from 'inquirer';
 import str from '@vicgutt/strjs';
 import projects from './Projects/index.js';

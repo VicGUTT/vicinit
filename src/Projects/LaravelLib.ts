@@ -1,5 +1,5 @@
 import { type ProjectStep, type Answers } from '../types/index.js';
-import fs from 'fs';
+import fs from 'node:fs';
 import str from '@vicgutt/strjs';
 import Project from './Project.js';
 import paths from '../utils/paths.js';

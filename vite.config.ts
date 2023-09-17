@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 
-// import fs from 'fs';
-// import path from 'path';
+// import fs from 'node:fs';
+// import path from 'node:path';
 import { defineConfig } from 'vite';
 
 // const lib = JSON.parse(fs.readFileSync('./package.json', 'utf8'));

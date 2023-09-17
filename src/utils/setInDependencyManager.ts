@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import is from '@vicgutt/isjs';
 import promisify from './promisify.js';
 
