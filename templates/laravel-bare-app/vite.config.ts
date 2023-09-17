@@ -5,7 +5,15 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import watchAndRun from '@kitql/vite-plugin-watch-and-run';
 
+const year = new Date().getFullYear();
+
 export default defineConfig({
+    build: {
+        /**
+         * @see https://vitejs.dev/config/#build-target
+         */
+        target: `es${year - 2}`,
+    },
     resolve: {
         alias: {
             '~': path.resolve('.'),
