@@ -1,4 +1,4 @@
-import { type ProjectStep, type Answers } from '../types/index.js';
+import type { ProjectStep, Answers, InstallableDependencies } from '../types/index.js';
 import fs from 'node:fs';
 import Project from './Project.js';
 import paths from '../utils/paths.js';
@@ -147,7 +147,7 @@ export default class LaravelBareApp extends Project {
         await cmd.run(`npm run format:fix`);
     }
 
-    protected getNpmDependenciesToInstall() {
+    protected getNpmDependenciesToInstall(): InstallableDependencies {
         return {
             regular: ['@vicgutt/isjs', '@vicgutt/macrojs', '@vicgutt/strjs'],
             dev: [
@@ -167,6 +167,7 @@ export default class LaravelBareApp extends Project {
                 '@vicgutt/tailwindcss-feature-detection',
                 '@vicgutt/tailwindcss-font-face',
                 '@vicgutt/tailwindcss-opinionated-preset',
+                '@vitest/coverage-c8',
                 'autoprefixer',
                 'c8',
                 'eslint',
@@ -180,6 +181,7 @@ export default class LaravelBareApp extends Project {
                 'lint-staged',
                 'postcss',
                 'prettier',
+                'prettier-plugin-tailwindcss',
                 'tailwindcss',
                 'tslib',
                 'typescript',
@@ -189,7 +191,7 @@ export default class LaravelBareApp extends Project {
         };
     }
 
-    protected getComposerDependenciesToRequire() {
+    protected getComposerDependenciesToRequire(): InstallableDependencies {
         return {
             regular: ['vicgutt/laravel-stubs'],
             dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'nunomaduro/larastan'],

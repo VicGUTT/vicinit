@@ -1,4 +1,4 @@
-import { type ProjectStep, type Answers } from '../types/index.js';
+import type { ProjectStep, Answers, InstallableDependencies } from '../types/index.js';
 import fs from 'node:fs';
 import str from '@vicgutt/strjs';
 import Project from './Project.js';
@@ -87,14 +87,14 @@ export default class LaravelLib extends Project {
         await cmd.run(`composer fix`);
     }
 
-    protected getNpmDependenciesToInstall() {
+    protected getNpmDependenciesToInstall(): InstallableDependencies {
         return {
             regular: [],
             dev: ['@commitlint/cli', '@commitlint/config-conventional', 'husky'],
         };
     }
 
-    protected getComposerDependenciesToRequire() {
+    protected getComposerDependenciesToRequire(): InstallableDependencies {
         return {
             regular: ['spatie/laravel-package-tools', 'illuminate/contracts'],
             dev: [

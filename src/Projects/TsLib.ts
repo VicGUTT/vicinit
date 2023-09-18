@@ -1,4 +1,4 @@
-import { type ProjectStep } from '../types/index.js';
+import type { InstallableDependencies, ProjectStep } from '../types/index.js';
 import Project from './Project.js';
 
 export default class TsLib extends Project {
@@ -15,7 +15,7 @@ export default class TsLib extends Project {
         ];
     }
 
-    protected getNpmDependenciesToInstall() {
+    protected getNpmDependenciesToInstall(): InstallableDependencies {
         return {
             regular: [],
             dev: [
