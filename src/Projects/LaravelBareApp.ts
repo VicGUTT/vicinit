@@ -43,7 +43,69 @@ export default class LaravelBareApp extends Project {
     protected async updateComposerJson(answers: Answers): Promise<void> {
         const data = JSON.parse(fs.readFileSync(`${paths.target}/composer.json`, 'utf-8'));
 
-        await super.updateComposerJson(answers, {
+        await super.updateComposerJson(answers, await this.makeComposerJsonNewData(data));
+    }
+
+    protected async updateProjectFiles(answers: Answers): Promise<void> {
+        await action("Updating the project's files", async () => {
+            const tokens = this.getReplaceableTokens(answers);
+
+            await replaceInDirectory(paths.target, tokens);
+
+            await replaceInDirectory(`${paths.target}/config`, {
+                "'Laravel'": `'${tokens['{project-name}']}'`,
+                "'laravel'": `'${tokens['{project-name}']}'`,
+                "'driver' => 'bcrypt',": `'driver' => 'argon2id',`, // hashing.php
+                "'encrypt' => false,": `'encrypt' => env('APP_ENV') !== 'local',`, // session.php
+                "env('SESSION_SECURE_COOKIE')": `env('SESSION_SECURE_COOKIE', str_starts_with(env('APP_URL', 'https'), 'https'))`, // session.php
+                // 'Str::slug(env(': 'Str::slug((string) env(',
+                // "explode(',', env(": "explode(',', (string) env(",
+            });
+        });
+    }
+
+    protected async generateAppKey(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`php artisan key:generate --ansi`);
+    }
+
+    protected async installDependencies(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`composer install`);
+        await cmd.run(`npm i`);
+    }
+
+    protected async runAdditionalArtisanCommands(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+
+        const commands = this.getAdditionalArtisanCommandsToRun();
+
+        for (const command of commands) {
+            await cmd.run(`php artisan ${command}`);
+        }
+    }
+
+    protected async updateAdditionalFiles(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+
+        await action('Updating additional files', async () => {
+            const entries = this.getAdditionalFilesToUpdate();
+
+            for (const [filePath, replacements] of Object.entries(entries)) {
+                replaceInFile(filePath, replacements);
+            }
+        });
+    }
+
+    protected async formatProject(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`composer fix`);
+        await cmd.run(`npm run fix`);
+        await cmd.run(`npm run format:fix`);
+    }
+
+    protected async makeComposerJsonNewData(data: ReturnType<JSON['parse']>): Promise<Record<string, unknown>> {
+        return {
             name: '{vendor-slug}/{project-slug}',
             license: 'proprietary',
             homepage: 'https://github.com/{vendor-slug}/{project-slug}',
@@ -80,71 +142,7 @@ export default class LaravelBareApp extends Project {
                     'phpstan/extension-installer': true,
                 },
             },
-        });
-    }
-
-    protected async updateProjectFiles(answers: Answers): Promise<void> {
-        await action("Updating the project's files", async () => {
-            const tokens = this.getReplaceableTokens(answers);
-
-            await replaceInDirectory(paths.target, tokens);
-
-            await replaceInDirectory(`${paths.target}/config`, {
-                "'Laravel'": `'${tokens['{project-name}']}'`,
-                "'laravel'": `'${tokens['{project-name}']}'`,
-                "'driver' => 'bcrypt',": `'driver' => 'argon2id',`, // hashing.php
-                "'encrypt' => false,": `'encrypt' => env('APP_ENV') !== 'local',`, // session.php
-                "env('SESSION_SECURE_COOKIE')": `env('SESSION_SECURE_COOKIE', str_starts_with(env('APP_URL', 'https'), 'https'))`, // session.php
-                // 'Str::slug(env(': 'Str::slug((string) env(',
-                // "explode(',', env(": "explode(',', (string) env(",
-            });
-        });
-    }
-
-    protected async generateAppKey(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`php artisan key:generate --ansi`);
-    }
-
-    protected async installDependencies(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`composer install`);
-        await cmd.run(`npm i`);
-    }
-
-    protected async runAdditionalArtisanCommands(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-
-        const commands = [
-            'vendor:publish --provider="Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider" --tag=config',
-        ];
-
-        for (const command of commands) {
-            await cmd.run(`php artisan ${command}`);
-        }
-    }
-
-    protected async updateAdditionalFiles(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-
-        await action('Updating additional files', async () => {
-            const entries = {
-                [`${paths.target}/config/ide-helper.php`]: {
-                    "'write_model_magic_where' => true,": "'write_model_magic_where' => false,",
-                },
-            };
-
-            for (const [filePath, replacements] of Object.entries(entries)) {
-                replaceInFile(filePath, replacements);
-            }
-        });
-    }
-
-    protected async formatProject(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`composer fix`);
-        await cmd.run(`npm run fix`);
-        await cmd.run(`npm run format:fix`);
+        };
     }
 
     protected getNpmDependenciesToInstall(): InstallableDependencies {
@@ -195,6 +193,18 @@ export default class LaravelBareApp extends Project {
         return {
             regular: ['vicgutt/laravel-stubs'],
             dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'nunomaduro/larastan'],
+        };
+    }
+
+    protected getAdditionalArtisanCommandsToRun(): string[] {
+        return ['vendor:publish --provider="Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider" --tag=config'];
+    }
+
+    protected getAdditionalFilesToUpdate(): Record<string, Record<string, string>> {
+        return {
+            [`${paths.target}/config/ide-helper.php`]: {
+                "'write_model_magic_where' => true,": "'write_model_magic_where' => false,",
+            },
         };
     }
 }
