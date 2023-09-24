@@ -25,7 +25,7 @@ export default class TsLib extends Project {
                 '@types/node',
                 '@typescript-eslint/eslint-plugin',
                 '@typescript-eslint/parser',
-                'c8',
+                '@vitest/coverage-v8',
                 'eslint',
                 'eslint-config-prettier',
                 'eslint-plugin-eslint-comments',
