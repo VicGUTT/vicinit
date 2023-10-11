@@ -80,7 +80,7 @@ export default class LaravelInertiaApp extends LaravelBareApp {
 
         return {
             regular: [...deps.regular, '@inertiajs/vue3', '@vue/server-renderer', '@vueuse/core', 'axios', 'vue'],
-            dev: [...deps.dev, '@types/ziggy-js', '@vitejs/plugin-vue', 'vue-tsc'],
+            dev: [...deps.dev, '@types/ziggy-js', '@vitejs/plugin-vue', 'vue-tsc', 'eslint-plugin-vue'],
         };
     }
 
