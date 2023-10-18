@@ -98,6 +98,7 @@
         // ]
         "n/no-missing-import": "off",
         "n/no-missing-require": "off",
+        "n/file-extension-in-import": ["error", "always"],
 
         "vue/component-definition-name-casing": ["error", "kebab-case"]
     }

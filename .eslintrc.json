@@ -91,6 +91,7 @@
         //         "enforceForFunctionPrototypeMethods": false
         //     }
         // ]
+        "n/file-extension-in-import": ["error", "always"],
         "n/shebang": "off"
     }
 }
