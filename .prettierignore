@@ -1,5 +1,10 @@
 /node_modules
-/tests/__Fixtures
+/tests/__fixtures/*.css
+/tests/__fixtures/*.json
+/tests/__fixtures/*.html
+/tests/__snapshots/*.css
+/tests/__snapshots/*.json
+/tests/__snapshots/*.html
 /dist
 /dist-ssr
 /.coverage
