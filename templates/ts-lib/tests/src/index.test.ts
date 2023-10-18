@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sum } from '../src/index.js';
+import { sum } from '../../src/index.js';
 
 describe('index', () => {
     it('works', () => {
