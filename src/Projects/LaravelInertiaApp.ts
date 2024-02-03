@@ -79,7 +79,15 @@ export default class LaravelInertiaApp extends LaravelBareApp {
         const deps = super.getNpmDependenciesToInstall();
 
         return {
-            regular: [...deps.regular, '@inertiajs/vue3', '@vue/server-renderer', '@vueuse/core', 'axios', 'vue'],
+            regular: [
+                ...deps.regular,
+                '@inertiajs/vue3',
+                '@vue/server-renderer',
+                '@vueuse/core',
+                'axios',
+                'vue',
+                'ziggy-js',
+            ],
             dev: [...deps.dev, '@types/ziggy-js', '@vitejs/plugin-vue', 'vue-tsc', 'eslint-plugin-vue'],
         };
     }
