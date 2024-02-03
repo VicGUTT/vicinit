@@ -57,6 +57,6 @@ abstract class TestCase extends Orchestra
 
     protected function getTestDirectory(string $path = ''): string
     {
-        return str_replace(['\\', '//'], '/', realpath(__DIR__) . '/' . $path);
+        return rtrim(str_replace(['\\', '//'], '/', realpath(__DIR__) . '/' . $path), '/');
     }
 }

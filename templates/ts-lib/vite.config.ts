@@ -41,6 +41,13 @@ export default defineConfig({
             fileName: (format) => `_${libName}.${format}.${format === 'umd' ? 'c' : ''}js`,
         },
     },
+    resolve: {
+        alias: {
+            '~': path.resolve('.'),
+            '@': path.resolve('./src'),
+            '#': path.resolve('./tests'),
+        },
+    },
     /**
      * @see https://vitest.dev/config/#configuration
      */

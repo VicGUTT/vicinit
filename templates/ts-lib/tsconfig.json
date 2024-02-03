@@ -1,5 +1,5 @@
 {
-    "include": ["./src"],
+    "include": ["./src", "./tests"],
     "compilerOptions": {
         "types": ["vite/client" /* , "vitest/globals" */, "node"],
 
@@ -19,20 +19,23 @@
 
         "importHelpers": true,
         "declaration": true,
-        "rootDir": "./src",
+        "rootDir": "./",
         "noFallthroughCasesInSwitch": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "noEmitOnError": true,
         "allowJs": true,
 
-        "outDir": "./dist"
+        "outDir": "./dist",
 
-        // "baseUrl": ".",
-        // "paths": {
-        //     "@vicgutt/isjs/*": ["./node_modules/@vicgutt/isjs/dist/*"],
-        //     "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"],
-        //     "@vicgutt/macrojs/*": ["./node_modules/@vicgutt/macrojs/dist/*"]
-        // }
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["./*"],
+            "@/*": ["src/*"],
+            "#/*": ["tests/*"],
+            // "@vicgutt/isjs/*": ["./node_modules/@vicgutt/isjs/dist/*"],
+            // "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"],
+            // "@vicgutt/macrojs/*": ["./node_modules/@vicgutt/macrojs/dist/*"]
+        }
     }
 }
