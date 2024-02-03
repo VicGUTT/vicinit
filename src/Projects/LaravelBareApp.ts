@@ -183,7 +183,7 @@ export default class LaravelBareApp extends Project {
     protected getComposerDependenciesToRequire(): InstallableDependencies {
         return {
             regular: ['vicgutt/laravel-stubs'],
-            dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'nunomaduro/larastan'],
+            dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'larastan/larastan'],
         };
     }
 

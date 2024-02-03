@@ -100,7 +100,7 @@ export default class LaravelLib extends Project {
             dev: [
                 'laravel/pint',
                 'nunomaduro/collision',
-                'nunomaduro/larastan',
+                'larastan/larastan',
                 'orchestra/testbench',
                 'pestphp/pest',
                 'pestphp/pest-plugin-laravel',
