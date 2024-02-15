@@ -40,15 +40,34 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->setup();
+        $this->setupStrictMode();
+        $this->setupPasswordDefaults();
         $this->setupRequestMacros();
         $this->setupBuilderMacros();
     }
 
-    private function setup(): void
+    private function setupStrictMode(): void
     {
-        $this->setupStrictMode();
+        /**
+         * @see https://laravel.com/docs/9.x/eloquent#configuring-eloquent-strictness
+         */
+        Model::shouldBeStrict(!$this->app->isProduction());
 
+        /**
+         * @see https://dyrynda.com.au/blog/laravel-immutable-dates
+         */
+        Date::use(CarbonImmutable::class);
+
+        /**
+         * @see https://laravel.com/docs/9.x/eloquent-relationships#custom-polymorphic-types
+         */
+        MorphTo::requireMorphMap();
+
+        $this->shouldMonitorCumulativeQueryTime(!$this->app->isProduction());
+    }
+
+    private function setupPasswordDefaults(): void
+    {
         /**
          * @see https://laravel.com/docs/9.x/validation#defining-default-password-rules
          */
@@ -76,31 +95,11 @@ final class AppServiceProvider extends ServiceProvider
             /** @var array $bindings */
             $bindings = array_map(
                 static fn (int|string|null $item): int|string => is_numeric($item) ? $item : "'{$item}'",
-                $this->getBindings()
+                $this->getBindings(),
             );
 
             return Str::replaceArray('?', $bindings, $this->toSql());
         });
-    }
-
-    private function setupStrictMode(): void
-    {
-        /**
-         * @see https://laravel.com/docs/9.x/eloquent#configuring-eloquent-strictness
-         */
-        Model::shouldBeStrict(!$this->app->isProduction());
-
-        /**
-         * @see https://dyrynda.com.au/blog/laravel-immutable-dates
-         */
-        Date::use(CarbonImmutable::class);
-
-        /**
-         * @see https://laravel.com/docs/9.x/eloquent-relationships#custom-polymorphic-types
-         */
-        MorphTo::requireMorphMap();
-
-        $this->shouldMonitorCumulativeQueryTime(!$this->app->isProduction());
     }
 
     /**
@@ -114,13 +113,13 @@ final class AppServiceProvider extends ServiceProvider
 
         $threshold = 500;
 
-        DB::whenQueryingForLongerThan($threshold, function (Connection $connection, QueryExecuted $query) use ($threshold): void {
-            $bindings = collect($query->bindings)->map(fn (int|string|null $item): int|string => is_numeric($item) ? $item : "'{$item}'");
+        DB::whenQueryingForLongerThan($threshold, static function (Connection $connection, QueryExecuted $query) use ($threshold): void {
+            $bindings = collect($query->bindings)->map(static fn (int|string|null $item): int|string => is_numeric($item) ? $item : "'{$item}'");
             $sql = Str::replaceArray('?', $bindings->toArray(), $query->sql);
             $time = $query->time * 1000;
 
             throw new Exception(
-                "[Long running query] - The following query executed on the connection `{$query->connectionName}` took `{$time}ms`, exceeding the `{$threshold}ms` threshold : `{$sql}`"
+                "[Long running query] - The following query executed on the connection `{$query->connectionName}` took `{$time}ms`, exceeding the `{$threshold}ms` threshold : `{$sql}`",
             );
         });
     }
