@@ -8,6 +8,10 @@
 </template>
 
 <script lang="ts" setup>
+defineOptions({
+    name: 'o-page-welcome',
+});
+
 import useRoute from '@/composables/useRoute.js';
 
 const route = useRoute();
