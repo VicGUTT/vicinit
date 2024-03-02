@@ -113,13 +113,12 @@ final class AppServiceProvider extends ServiceProvider
 
         $threshold = 500;
 
-        DB::whenQueryingForLongerThan($threshold, static function (Connection $connection, QueryExecuted $query) use ($threshold): void {
-            $bindings = collect($query->bindings)->map(static fn (int|string|null $item): int|string => is_numeric($item) ? $item : "'{$item}'");
-            $sql = Str::replaceArray('?', $bindings->toArray(), $query->sql);
-            $time = $query->time * 1000;
+        DB::whenQueryingForLongerThan($threshold, static function (Connection $connection, QueryExecuted $event) use ($threshold): void {
+            $bindings = collect($event->bindings)->map(static fn (int|string|null $item): int|string => is_numeric($item) ? $item : "'{$item}'");
+            $sql = Str::replaceArray('?', $bindings->toArray(), $event->sql);
 
             throw new Exception(
-                "[Long running query] - The following query executed on the connection `{$query->connectionName}` took `{$time}ms`, exceeding the `{$threshold}ms` threshold : `{$sql}`",
+                "[Long running query] - The following query executed on the connection `{$event->connectionName}` took `{$event->time}ms`, exceeding the `{$threshold}ms` threshold : `{$sql}`",
             );
         });
     }
