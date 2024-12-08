@@ -63,6 +63,11 @@ final class AppServiceProvider extends ServiceProvider
          */
         MorphTo::requireMorphMap();
 
+        /**
+         * @see https://laravel-news.com/prevent-destructive-commands-from-running-in-laravel-11
+         */
+        DB::prohibitDestructiveCommands($this->app->isProduction());
+
         $this->shouldMonitorCumulativeQueryTime(!$this->app->isProduction());
     }
 
