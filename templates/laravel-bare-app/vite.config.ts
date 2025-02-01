@@ -3,6 +3,7 @@
 import path from 'node:path';
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
 import watchAndRun from '@kitql/vite-plugin-watch-and-run';
 
 const year = new Date().getFullYear();
@@ -25,6 +26,7 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/ts/app.ts'],
             refresh: true,
         }),
+        tailwindcss(),
         /**
          * @see https://www.kitql.dev/docs/setup/03_vite-plugin-watch-and-run
          */

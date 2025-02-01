@@ -1,15 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@source '../views';
 
 /* Setup
 ------------------------------------------------*/
+
+@theme {
+    /**
+     * Font family
+     */
+    --font-sans: 'Mulish', 'Muli', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-mono: 'Source code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
+}
 
 @layer base {
     @font-face {
         font-family: 'Mulish';
         font-display: swap; /* auto | block | swap | fallback | optional */
-        src: 
+        src:
             /*
                 local('Muli'),
                 local('muli'),
