@@ -24,6 +24,7 @@ export default class LaravelBareApp extends Project {
             this.installDependencies,
             this.runAdditionalArtisanCommands,
             this.updateAdditionalFiles,
+            this.runNpmBuild,
             this.formatProject,
             this.commitGit,
             this.openInVsCode,
@@ -117,6 +118,11 @@ export default class LaravelBareApp extends Project {
                 replaceInFile(filePath, replacements);
             }
         });
+    }
+
+    protected async runNpmBuild(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`npm run build`);
     }
 
     protected async formatProject(): Promise<void> {
