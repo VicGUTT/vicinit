@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -44,6 +45,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->setupPasswordDefaults();
         $this->setupRequestMacros();
         $this->setupBuilderMacros();
+        $this->setupBehaviorChanges();
     }
 
     private function setupStrictMode(): void
@@ -105,6 +107,14 @@ final class AppServiceProvider extends ServiceProvider
 
             return Str::replaceArray('?', $bindings, $this->toSql());
         });
+    }
+
+    private function setupBehaviorChanges(): void
+    {
+        /**
+         * @see https://github.com/laravel/framework/pull/53734
+         */
+        RequestException::dontTruncate();
     }
 
     /**
