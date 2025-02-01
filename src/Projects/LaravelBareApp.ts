@@ -15,9 +15,10 @@ export default class LaravelBareApp extends Project {
             this.removeUnnecessaryProjectFiles,
             this.copyTemplateDirectoryToTarget,
             this.renameGitignore,
+            this.generateAppKey,
+            this.publishConfigFiles,
             this.updateComposerJson,
             this.updateProjectFiles,
-            this.generateAppKey,
             this.installNpmDependencies,
             this.requireComposerDependencies,
             this.installDependencies,
@@ -38,6 +39,16 @@ export default class LaravelBareApp extends Project {
     protected async removeUnnecessaryProjectFiles(): Promise<void> {
         await cmd.run(`rm "${paths.target}/vite.config.js"`);
         await cmd.run(`rm -rf "${paths.target}/resources/js"`);
+    }
+
+    protected async generateAppKey(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`php artisan key:generate --ansi`);
+    }
+
+    protected async publishConfigFiles(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`php artisan config:publish --all`);
     }
 
     protected async updateComposerJson(answers: Answers): Promise<void> {
@@ -61,12 +72,23 @@ export default class LaravelBareApp extends Project {
                 // 'Str::slug(env(': 'Str::slug((string) env(',
                 // "explode(',', env(": "explode(',', (string) env(",
             });
-        });
-    }
 
-    protected async generateAppKey(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`php artisan key:generate --ansi`);
+            replaceInFile(`${paths.target}/bootstrap/app.php`, {
+                "\n        web: __DIR__.'/../routes/web.php',": '',
+                "\n        health: '/up',": `
+        /**
+         * @see https://laravel.com/docs/11.x/routing#routing-customization
+         * @see app/Providers/RouteServiceProvider.php
+         */
+        using: fn () => null,
+                `,
+            });
+
+            replaceInFile(`${paths.target}/bootstrap/providers.php`, {
+                'App\\Providers\\AppServiceProvider::class,':
+                    'App\\Providers\\AppServiceProvider::class,\n    App\\Providers\\RouteServiceProvider::class,',
+            });
+        });
     }
 
     protected async installDependencies(): Promise<void> {
@@ -188,7 +210,10 @@ export default class LaravelBareApp extends Project {
     }
 
     protected getAdditionalArtisanCommandsToRun(): string[] {
-        return ['vendor:publish --provider="Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider" --tag=config'];
+        return [
+            'vendor:publish --provider="Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider" --tag=config',
+            'migrate',
+        ];
     }
 
     protected getAdditionalFilesToUpdate(): Record<string, Record<string, string>> {

@@ -119,6 +119,7 @@ export default abstract class Project {
         }
 
         if (deps.dev.length) {
+            // await cmd.run(`composer require --dev --with-all-dependencies ${deps.dev.join(' ')}`);
             await cmd.run(`composer require --dev ${deps.dev.join(' ')}`);
         }
     }

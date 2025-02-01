@@ -16,15 +16,22 @@ final class UserFactory extends Factory
     public const DUMMY_PASSWORD = '0000';
 
     /**
+     * The current password being used by the factory.
+     */
+    protected static ?string $password;
+
+    /**
      * Define the model's default state.
+     *
+     * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
             'name' => fake()->name(),
-            'email' => fake()->safeEmail(),
+            'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => Hash::make(self::DUMMY_PASSWORD),
+            'password' => static::$password ??= Hash::make(self::DUMMY_PASSWORD),
             'remember_token' => Str::random(10),
         ];
     }

@@ -14,15 +14,6 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 final class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The path to the "home" route for your application.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
-     */
-    public const HOME = '/home';
-
-    /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
     public function boot(): void
@@ -30,9 +21,9 @@ final class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(static function (): void {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+            // Route::middleware('api')
+            //     ->prefix('api')
+            //     ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
