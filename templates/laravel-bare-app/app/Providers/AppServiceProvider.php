@@ -10,10 +10,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Database\Events\QueryExecuted;
@@ -43,8 +43,6 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->setupStrictMode();
         $this->setupPasswordDefaults();
-        $this->setupRequestMacros();
-        $this->setupBuilderMacros();
         $this->setupBehaviorChanges();
     }
 
@@ -89,32 +87,18 @@ final class AppServiceProvider extends ServiceProvider
         });
     }
 
-    private function setupRequestMacros(): void
-    {
-        //
-    }
-
-    private function setupBuilderMacros(): void
-    {
-        Builder::macro('toSqlWithBindings', function (): string {
-            /** @var Builder<\Illuminate\Database\Eloquent\Model> $this */
-
-            /** @var array $bindings */
-            $bindings = array_map(
-                static fn (int|string|null $item): int|string => is_numeric($item) ? $item : "'{$item}'",
-                $this->getBindings(),
-            );
-
-            return Str::replaceArray('?', $bindings, $this->toSql());
-        });
-    }
-
     private function setupBehaviorChanges(): void
     {
         /**
          * @see https://github.com/laravel/framework/pull/53734
          */
         RequestException::dontTruncate();
+
+        /**
+         * @see https://laravel.com/docs/11.x/vite#asset-prefetching
+         * @see https://github.com/laravel/framework/pull/52462
+         */
+        Vite::prefetch(concurrency: 3);
     }
 
     /**
@@ -131,6 +115,30 @@ final class AppServiceProvider extends ServiceProvider
         DB::whenQueryingForLongerThan($threshold, static function (Connection $connection, QueryExecuted $event) use ($threshold): void {
             $bindings = collect($event->bindings)->map(static fn (int|string|null $item): int|string => is_numeric($item) ? $item : "'{$item}'");
             $sql = Str::replaceArray('?', $bindings->toArray(), $event->sql);
+
+            if (str_contains($sql, 'from information_schema.tables')) {
+                return;
+            }
+
+            if (str_contains($sql, 'create table')) {
+                return;
+            }
+
+            if (str_contains($sql, 'alter table')) {
+                return;
+            }
+
+            if (str_contains($sql, 'drop table')) {
+                return;
+            }
+
+            if (str_contains($sql, 'insert into')) {
+                return;
+            }
+
+            if (str_contains($sql, 'update ')) {
+                return;
+            }
 
             throw new Exception(
                 "[Long running query] - The following query executed on the connection `{$event->connectionName}` took `{$event->time}ms`, exceeding the `{$threshold}ms` threshold : `{$sql}`",
