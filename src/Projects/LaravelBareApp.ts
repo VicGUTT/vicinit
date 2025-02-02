@@ -67,11 +67,12 @@ export default class LaravelBareApp extends Project {
             await replaceInDirectory(`${paths.target}/config`, {
                 "'Laravel'": `'${tokens['{project-name}']}'`,
                 "'laravel'": `'${tokens['{project-name}']}'`,
-                "'driver' => 'bcrypt',": `'driver' => 'argon2id',`, // hashing.php
-                "'encrypt' => false,": `'encrypt' => env('APP_ENV') !== 'local',`, // session.php
-                "env('SESSION_SECURE_COOKIE')": `env('SESSION_SECURE_COOKIE', str_starts_with(env('APP_URL', 'https'), 'https'))`, // session.php
-                // 'Str::slug(env(': 'Str::slug((string) env(',
-                // "explode(',', env(": "explode(',', (string) env(",
+                "'driver' => env('HASH_DRIVER', 'bcrypt'),": `'driver' => env('HASH_DRIVER', 'argon2id'),`, // hashing.php
+                "'encrypt' => env('SESSION_ENCRYPT', false),": `'encrypt' => env('SESSION_ENCRYPT', env('APP_ENV') !== 'local'),`, // session.php
+                "env('SESSION_SECURE_COOKIE')": `env('SESSION_SECURE_COOKIE', str_starts_with((string) env('APP_URL', 'https'), 'https'))`, // session.php
+                "explode(',', env(": "explode(',', (string) env(", // app.php, logging.php
+                'Str::slug(env(': 'Str::slug((string) env(', // cache.php, database.php, session.php
+                'parse_url(env(': 'parse_url((string) env(', // mail.php
             });
 
             replaceInFile(`${paths.target}/bootstrap/app.php`, {
@@ -224,7 +225,9 @@ export default class LaravelBareApp extends Project {
     protected getAdditionalFilesToUpdate(): Record<string, Record<string, string>> {
         return {
             [`${paths.target}/config/ide-helper.php`]: {
-                "'write_model_magic_where' => true,": "'write_model_magic_where' => false,",
+                // "'write_model_magic_where' => true,": "'write_model_magic_where' => false,",
+                'Filament\\Support\\Concerns\\Macroable::class,': '// Filament\\Support\\Concerns\\Macroable::class,',
+                'Spatie\\Macroable\\Macroable::class,': '// Spatie\\Macroable\\Macroable::class,',
             },
         };
     }

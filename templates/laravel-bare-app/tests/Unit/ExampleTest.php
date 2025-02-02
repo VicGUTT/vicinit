@@ -12,6 +12,7 @@ final class ExampleTest extends TestCase
     #[Test]
     public function it_asserts_that_true_is_true(): void
     {
+        // @phpstan-ignore-next-line
         $this->assertTrue(true);
     }
 }
