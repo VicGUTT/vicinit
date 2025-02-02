@@ -1,23 +1,33 @@
 includes:
     - ./vendor/larastan/larastan/extension.neon
+    - ./vendor/nesbot/carbon/extension.neon
 
 parameters:
-    # The level 9 is the highest level
+    # Level 10 is the highest level
     level: 8
 
     paths:
         - app
+        - bootstrap/app.php
+        # - bootstrap/helpers.php
+        - bootstrap/providers.php
         - config
         - database
+        - routes
+        - tests
 
-    # ignoreErrors:
-    #     - '#PHPDoc tag @var#'
+    ignoreErrors:
+        # - '#PHPDoc tag @var#'
+        # -
+        #     message: '#Undefined variable: \$this#'
+        #     path: tests/pest/*
+        # -
+        #     identifier: missingType.iterableValue
 
     # excludePaths:
     #     - ./*/*/FileToBeExcluded.php
 
-    tmpDir: .results/phpstan
+    tmpDir: ./vendor/phpstan/.results
 
     checkModelProperties: true
     checkOctaneCompatibility: true
-    checkMissingIterableValueType: false
