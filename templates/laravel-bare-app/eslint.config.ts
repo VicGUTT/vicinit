@@ -5,6 +5,8 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPrettierPlugin from 'eslint-plugin-prettier/recommended';
 import eslintNPlugin from 'eslint-plugin-n';
 import eslintJsoncPlugin from 'eslint-plugin-jsonc';
+import vitestPlugin from '@vitest/eslint-plugin';
+import playwrightPlugin from 'eslint-plugin-playwright';
 
 export default typescriptEslint.config(
     eslint.configs.recommended,
@@ -17,6 +19,15 @@ export default typescriptEslint.config(
     eslintJsoncPlugin.configs['flat/recommended-with-json5'],
 
     {
+        ...vitestPlugin.configs.recommended,
+        files: ['tests/vitest/**/*.{js,ts}'],
+    },
+    {
+        ...playwrightPlugin.configs['flat/recommended'],
+        files: ['tests/playwright/**/*.test.{js,ts}'],
+    },
+
+    {
         name: 'app/files-to-lint',
         files: ['resources/**/*.{js,ts}', 'tests/vitest/**/*.{js,ts}', 'tests/playwright/**/*.{js,ts}'],
     },
@@ -27,7 +38,8 @@ export default typescriptEslint.config(
             '.husky',
             '.vic',
             'app',
-            'bootstrap',
+            'bootstrap/cache',
+            'bootstrap/ssr',
             'config',
             'database',
             'node_modules',
@@ -42,17 +54,21 @@ export default typescriptEslint.config(
             'routes',
             'storage',
             'stubs',
-            'tests',
+            'tests/phpunit',
+            'tests/vitest/.coverage',
+            'tests/playwright/.test-results',
+            'tests/playwright/.report',
             'vendor',
-            '_ide_helper_models.php',
-            '_ide_helper.php',
-            '*.vic',
-            '*.php',
-            '.phpstorm.meta.php',
-            'package-lock.json',
-            'composer.lock',
-            '!.prettierrc.json',
-            '!.blade.php',
+            '**/_ide_helper_models.php',
+            '**/_ide_helper.php',
+            '**/*.vic',
+            '**/*.php',
+            '**/*.json',
+            '**/.phpstorm.meta.php',
+            '**/package-lock.json',
+            '**/composer.lock',
+            '**/.prettierrc.json',
+            '!**/.blade.php',
         ],
     },
 
