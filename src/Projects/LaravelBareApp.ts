@@ -174,6 +174,7 @@ export default class LaravelBareApp extends Project {
                 '@kitql/vite-plugin-watch-and-run',
                 '@playwright/test',
                 '@tailwindcss/vite',
+                '@tsconfig/node22',
                 '@types/node',
                 // '@vicgutt/tailwindcss-opinionated-preset',
                 '@vitest/coverage-v8',

@@ -1,0 +1,27 @@
+{
+    "include": ["env.d.ts", "resources/ts/**/*"],
+    "compilerOptions": {
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+
+        "target": "ESNext",
+        "module": "ESNext",
+
+        "moduleResolution": "Bundler",
+        "moduleDetection": "force",
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+
+        "rootDir": "./resources",
+        "outDir": "./public/build",
+
+        "baseUrl": ".",
+        "paths": {
+            // "~/*": ["./*"],
+            "@/*": ["./resources/ts/*"],
+            "@vicgutt/isjs/*": ["./node_modules/@vicgutt/isjs/dist/*"],
+            "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"],
+            "@vicgutt/macrojs/*": ["./node_modules/@vicgutt/macrojs/dist/*"]
+        }
+    }
+}

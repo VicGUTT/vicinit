@@ -1,12 +1,17 @@
 {
-    "include": ["./resources/ts"],
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.node.json",
+        },
+        {
+            "path": "./tsconfig.app.json",
+        },
+        {
+            "path": "./tsconfig.vitest.json",
+        },
+    ],
     "compilerOptions": {
-        "types": ["vite/client", "node"],
-
-        "target": "ESNext",
-        "module": "ESNext",
-        "lib": ["ESNext", "DOM"],
-        "moduleResolution": "bundler",
         "strict": true,
         "strictNullChecks": true,
         "sourceMap": true,
@@ -19,22 +24,10 @@
 
         "importHelpers": true,
         "declaration": false,
-        "rootDir": "./resources",
         "noFallthroughCasesInSwitch": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "noEmitOnError": true,
         "allowJs": true,
-
-        "outDir": "./public/build",
-
-        "baseUrl": ".",
-        "paths": {
-            "~/*": ["./*"],
-            "@/*": ["resources/ts/*"],
-            "@vicgutt/isjs/*": ["./node_modules/@vicgutt/isjs/dist/*"],
-            "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"],
-            "@vicgutt/macrojs/*": ["./node_modules/@vicgutt/macrojs/dist/*"],
-        },
     },
 }
