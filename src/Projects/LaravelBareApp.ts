@@ -21,6 +21,7 @@ export default class LaravelBareApp extends Project {
             this.updateProjectFiles,
             this.installNpmDependencies,
             this.requireComposerDependencies,
+            this.removeUnnecessaryDependencies,
             this.installDependencies,
             this.runAdditionalArtisanCommands,
             this.updateAdditionalFiles,
@@ -40,6 +41,9 @@ export default class LaravelBareApp extends Project {
     protected async removeUnnecessaryProjectFiles(): Promise<void> {
         await cmd.run(`rm "${paths.target}/vite.config.js"`);
         await cmd.run(`rm -rf "${paths.target}/resources/js"`);
+        await cmd.run(`rm -rf "${paths.target}/tests/Feature"`);
+        await cmd.run(`rm -rf "${paths.target}/tests/Unit"`);
+        await cmd.run(`rm -rf "${paths.target}/tests/TestCase.php"`);
     }
 
     protected async generateAppKey(): Promise<void> {
@@ -80,6 +84,12 @@ export default class LaravelBareApp extends Project {
                     'App\\Providers\\AppServiceProvider::class,\n    App\\Providers\\RouteServiceProvider::class,',
             });
         });
+    }
+
+    protected async removeUnnecessaryDependencies(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        // await cmd.run(`composer remove laravel/pail laravel/sail --dev`);
+        await cmd.run(`composer remove phpunit/phpunit --dev`);
     }
 
     protected async installDependencies(): Promise<void> {
@@ -135,7 +145,7 @@ export default class LaravelBareApp extends Project {
                 ...(data['autoload-dev'] ?? {}),
                 'psr-4': {
                     ...((data['autoload-dev'] ?? {})['psr-4'] ?? {}),
-                    'Tests\\': 'tests/phpunit',
+                    'Tests\\': 'tests/pest',
                 },
             },
             scripts: {
@@ -144,8 +154,10 @@ export default class LaravelBareApp extends Project {
                 analyse: 'vendor/bin/phpstan analyse --memory-limit=1G',
                 lint: 'composer analyse',
 
-                test: 'php artisan test',
-                'test:coverage': 'php artisan test --coverage --min=90',
+                test: 'vendor/bin/pest --test-directory=tests\\pest',
+                'test:stop-on-defect': 'vendor/bin/pest --test-directory=tests\\pest --stop-on-defect',
+                'test:coverage': 'vendor/bin/pest --test-directory=tests\\pest --coverage --min=90',
+                'test:[filtered]': 'vendor/bin/pest --test-directory=tests\\pest --filter=ExampleTest',
 
                 format: 'vendor/bin/pint --test',
                 'format:fix': 'vendor/bin/pint',
@@ -214,7 +226,7 @@ export default class LaravelBareApp extends Project {
     protected getComposerDependenciesToRequire(): InstallableDependencies {
         return {
             regular: ['vicgutt/laravel-stubs'],
-            dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'larastan/larastan'],
+            dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'larastan/larastan', 'pestphp/pest'],
         };
     }
 
