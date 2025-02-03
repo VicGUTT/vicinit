@@ -185,6 +185,7 @@ export default class LaravelBareApp extends Project {
                 'husky',
                 'laravel-vite-plugin',
                 'lint-staged',
+                'npm-run-all2',
                 'prettier',
                 'prettier-plugin-tailwindcss',
                 'tailwindcss',
