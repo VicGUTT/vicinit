@@ -8,7 +8,8 @@ import eslintJsoncPlugin from 'eslint-plugin-jsonc';
 
 export default typescriptEslint.config(
     eslint.configs.recommended,
-    typescriptEslint.configs.recommended,
+    typescriptEslint.configs.strictTypeChecked,
+    typescriptEslint.configs.stylisticTypeChecked,
     eslintCommentsPlugin.recommended,
     eslintConfigPrettier,
     eslintPrettierPlugin,
@@ -65,6 +66,10 @@ export default typescriptEslint.config(
             curly: 'error',
             eqeqeq: 'error',
             yoda: 'error',
+
+            '@typescript-eslint/consistent-type-exports': 'error',
+            '@typescript-eslint/consistent-type-imports': 'error',
+            '@typescript-eslint/no-import-type-side-effects': 'error',
 
             'n/no-missing-import': 'off',
             'n/no-missing-require': 'off',
