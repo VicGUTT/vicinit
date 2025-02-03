@@ -203,6 +203,7 @@ export default class LaravelBareApp extends Project {
                 'typescript',
                 'typescript-eslint',
                 'vite',
+                'vite-plugin-manifest-sri',
                 'vitest',
             ],
         };

@@ -2,6 +2,7 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
+import manifestSRI from 'vite-plugin-manifest-sri';
 import watchAndRun from '@kitql/vite-plugin-watch-and-run';
 
 export default defineConfig({
@@ -23,6 +24,7 @@ export default defineConfig({
             refresh: true,
         }),
         tailwindcss(),
+        manifestSRI(),
         /**
          * @see https://www.kitql.dev/docs/setup/03_vite-plugin-watch-and-run
          */
