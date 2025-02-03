@@ -39,6 +39,7 @@ export default class LaravelBareApp extends Project {
     }
 
     protected async removeUnnecessaryProjectFiles(): Promise<void> {
+        await cmd.run(`rm "${paths.target}/postcss.config.js"`);
         await cmd.run(`rm "${paths.target}/vite.config.js"`);
         await cmd.run(`rm -rf "${paths.target}/resources/js"`);
         await cmd.run(`rm -rf "${paths.target}/tests/Feature"`);
@@ -122,7 +123,7 @@ export default class LaravelBareApp extends Project {
 
     protected async runNpmBuild(): Promise<void> {
         await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`npm run build`);
+        await cmd.run(`npm run build:strict`);
     }
 
     protected async formatProject(): Promise<void> {
@@ -149,19 +150,20 @@ export default class LaravelBareApp extends Project {
                 },
             },
             scripts: {
-                ...data.scripts,
-
                 analyse: 'vendor/bin/phpstan analyse --memory-limit=1G',
                 lint: 'composer analyse',
 
-                test: 'vendor/bin/pest --test-directory=tests\\pest',
-                'test:stop-on-defect': 'vendor/bin/pest --test-directory=tests\\pest --stop-on-defect',
-                'test:coverage': 'vendor/bin/pest --test-directory=tests\\pest --coverage --min=90',
-                'test:[filtered]': 'vendor/bin/pest --test-directory=tests\\pest --filter=ExampleTest',
+                test: 'vendor/bin/pest --test-directory=tests/pest',
+                'test:stop-on-defect': 'vendor/bin/pest --test-directory=tests/pest --stop-on-defect',
+                'test:coverage': 'vendor/bin/pest --test-directory=tests/pest --coverage --min=90',
+                'test:[filtered]':
+                    'vendor/bin/pest --test-directory=tests/pest tests/pest/Feature/Http/ExampleTest.php',
 
                 format: 'vendor/bin/pint --test',
                 'format:fix': 'vendor/bin/pint',
                 fix: 'composer format:fix',
+
+                ...data.scripts,
 
                 'post-update-cmd': [
                     ...(data.scripts['post-update-cmd'] ?? []),
@@ -226,7 +228,13 @@ export default class LaravelBareApp extends Project {
     protected getComposerDependenciesToRequire(): InstallableDependencies {
         return {
             regular: ['vicgutt/laravel-stubs'],
-            dev: ['barryvdh/laravel-ide-helper', 'laravel/pint', 'larastan/larastan', 'pestphp/pest'],
+            dev: [
+                'barryvdh/laravel-ide-helper',
+                'laravel/pint',
+                'larastan/larastan',
+                'pestphp/pest',
+                'pestphp/pest-plugin-laravel',
+            ],
         };
     }
 

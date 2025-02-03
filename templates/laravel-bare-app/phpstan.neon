@@ -18,9 +18,9 @@ parameters:
 
     ignoreErrors:
         # - '#PHPDoc tag @var#'
-        # -
-        #     message: '#Undefined variable: \$this#'
-        #     path: tests/pest/*
+        -
+            message: '#Undefined variable: \$this#'
+            path: tests/pest/*
         # -
         #     identifier: missingType.iterableValue
 
