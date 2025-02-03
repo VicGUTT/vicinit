@@ -131,7 +131,16 @@ export default class LaravelBareApp extends Project {
                 ...data.require,
                 php: `^${await this.getPhpVersion()}`,
             },
+            'autoload-dev': {
+                ...(data['autoload-dev'] ?? {}),
+                'psr-4': {
+                    ...((data['autoload-dev'] ?? {})['psr-4'] ?? {}),
+                    'Tests\\': 'tests/phpunit',
+                },
+            },
             scripts: {
+                ...data.scripts,
+
                 analyse: 'vendor/bin/phpstan analyse --memory-limit=1G',
                 lint: 'composer analyse',
 
@@ -141,8 +150,6 @@ export default class LaravelBareApp extends Project {
                 format: 'vendor/bin/pint --test',
                 'format:fix': 'vendor/bin/pint',
                 fix: 'composer format:fix',
-
-                ...data.scripts,
 
                 'post-update-cmd': [
                     ...(data.scripts['post-update-cmd'] ?? []),
