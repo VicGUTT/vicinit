@@ -12,6 +12,24 @@
         "allowImportingTsExtensions": true,
         "noEmit": true,
 
+        "strict": true,
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "isolatedModules": true,
+
+        "importHelpers": true,
+        "declaration": false,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
+        "allowJs": true,
+
         "rootDir": "./resources",
         "outDir": "./public/build",
 

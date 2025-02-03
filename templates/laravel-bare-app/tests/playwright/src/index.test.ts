@@ -7,6 +7,6 @@ test.describe('index', () => {
     test('it works', async ({ page }) => {
         await page.goto(env.VITE_APP_URL);
 
-        await expect(page).toHaveTitle(new RegExp(env.VITE_APP_NAME, 'g'));
+        await expect(page).toHaveTitle(new RegExp(env.VITE_APP_NAME, 'gi'));
     });
 });

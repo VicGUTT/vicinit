@@ -1,12 +1,12 @@
 {
     "extends": "@tsconfig/node22/tsconfig.json",
     "include": [
+        "commitlint.config.*",
+        "eslint.config.*",
+        "lint-staged.config.*",
+        "playwright.config.*",
         "vite.config.*",
         "vitest.config.*",
-        "cypress.config.*",
-        "nightwatch.conf.*",
-        "playwright.config.*",
-        "eslint.config.*"
     ],
     "compilerOptions": {
         "noEmit": true,
@@ -16,6 +16,24 @@
         "moduleResolution": "Bundler",
         "types": ["node"],
 
-        "noImplicitAny": false
+        "noImplicitAny": false,
+
+        "strict": true,
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "isolatedModules": true,
+
+        "importHelpers": true,
+        "declaration": false,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
+        "allowJs": true,
     }
 }

@@ -1,20 +1,13 @@
 {
-    "files": [],
-    "references": [
-        {
-            "path": "./tsconfig.node.json",
-        },
-        {
-            "path": "./tsconfig.app.json",
-        },
-        {
-            "path": "./tsconfig.vitest.json",
-        },
-        {
-            "path": "./tsconfig.playwright.json",
-        },
-    ],
+    "extends": "./tsconfig.app.json",
+    "include": ["env.d.ts", "tests/playwright/**/*"],
+    "exclude": ["resources/ts/**/*"],
     "compilerOptions": {
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.playwright.tsbuildinfo",
+
+        "lib": [],
+        "types": ["node"],
+
         "strict": true,
         "strictNullChecks": true,
         "sourceMap": true,
@@ -32,5 +25,8 @@
         "forceConsistentCasingInFileNames": true,
         "noEmitOnError": true,
         "allowJs": true,
-    },
+
+        "rootDir": "./tests/playwright",
+        "outDir": "./tests/playwright/.build"
+    }
 }

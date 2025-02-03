@@ -39,12 +39,16 @@ export default class LaravelBareApp extends Project {
     }
 
     protected async removeUnnecessaryProjectFiles(): Promise<void> {
-        await cmd.run(`rm "${paths.target}/postcss.config.js"`);
+        // Files
         await cmd.run(`rm "${paths.target}/vite.config.js"`);
+        await cmd.run(`rm "${paths.target}/postcss.config.js"`);
+        await cmd.run(`rm "${paths.target}/tailwind.config.js"`);
+        await cmd.run(`rm "${paths.target}/tests/TestCase.php"`);
+
+        // Directories
         await cmd.run(`rm -rf "${paths.target}/resources/js"`);
         await cmd.run(`rm -rf "${paths.target}/tests/Feature"`);
         await cmd.run(`rm -rf "${paths.target}/tests/Unit"`);
-        await cmd.run(`rm -rf "${paths.target}/tests/TestCase.php"`);
     }
 
     protected async generateAppKey(): Promise<void> {
@@ -248,7 +252,7 @@ export default class LaravelBareApp extends Project {
     protected getAdditionalFilesToUpdate(): Record<string, Record<string, string>> {
         return {
             [`${paths.target}/config/ide-helper.php`]: {
-                // "'write_model_magic_where' => true,": "'write_model_magic_where' => false,",
+                "'write_model_magic_where' => true,": "'write_model_magic_where' => false,",
                 'Filament\\Support\\Concerns\\Macroable::class,': '// Filament\\Support\\Concerns\\Macroable::class,',
                 'Spatie\\Macroable\\Macroable::class,': '// Spatie\\Macroable\\Macroable::class,',
             },

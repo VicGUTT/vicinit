@@ -77,6 +77,14 @@ export default typescriptEslint.config(
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'module',
+
+            /**
+             * @see https://typescript-eslint.io/getting-started/typed-linting
+             */
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
         },
         rules: {
             curly: 'error',
@@ -86,6 +94,11 @@ export default typescriptEslint.config(
             '@typescript-eslint/consistent-type-exports': 'error',
             '@typescript-eslint/consistent-type-imports': 'error',
             '@typescript-eslint/no-import-type-side-effects': 'error',
+            '@typescript-eslint/no-unsafe-call': 'off',
+            '@typescript-eslint/no-unsafe-argument': 'off',
+            '@typescript-eslint/no-unsafe-member-access': 'off',
+            '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+            '@typescript-eslint/ban-ts-comment': ['error', { minimumDescriptionLength: 3 }],
 
             'n/no-missing-import': 'off',
             'n/no-missing-require': 'off',
