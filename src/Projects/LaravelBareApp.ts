@@ -75,17 +75,6 @@ export default class LaravelBareApp extends Project {
                 'parse_url(env(': 'parse_url((string) env(', // mail.php
             });
 
-            replaceInFile(`${paths.target}/bootstrap/app.php`, {
-                "\n        web: __DIR__.'/../routes/web.php',": '',
-                "\n        health: '/up',": `
-        /**
-         * @see https://laravel.com/docs/11.x/routing#routing-customization
-         * @see app/Providers/RouteServiceProvider.php
-         */
-        using: fn () => null,
-                `,
-            });
-
             replaceInFile(`${paths.target}/bootstrap/providers.php`, {
                 'App\\Providers\\AppServiceProvider::class,':
                     'App\\Providers\\AppServiceProvider::class,\n    App\\Providers\\RouteServiceProvider::class,',
