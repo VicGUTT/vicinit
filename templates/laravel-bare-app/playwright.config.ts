@@ -63,12 +63,23 @@ export default defineConfig({
                 ...devices['Desktop Firefox'],
             },
         },
-        {
-            name: 'webkit',
-            use: {
-                ...devices['Desktop Safari'],
-            },
-        },
+        /**
+         * `Error: page.goto: SSL connect error`.
+         *
+         * This does not solve the issue.
+         * use: {
+         *     // ...
+         *     contextOptions: {
+         *         ignoreHTTPSErrors: true,
+         *     },
+         * },
+         */
+        // {
+        //     name: 'webkit',
+        //     use: {
+        //         ...devices['Desktop Safari'],
+        //     },
+        // },
 
         /* Test against mobile viewports. */
         // {
