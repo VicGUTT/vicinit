@@ -6,7 +6,6 @@ namespace App\Http\Middleware;
 
 use Inertia\Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 final class HandleInertiaRequests extends Middleware
 {
@@ -16,16 +15,21 @@ final class HandleInertiaRequests extends Middleware
      * @see https://inertiajs.com/server-side-setup#root-template
      * @var string
      */
-    protected $rootView = 'views.app';
+    protected $rootView = 'app';
 
     /**
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
      */
-    public function version(Request $request): ?string
+    public function version(Request $request): string
     {
-        return parent::version($request);
+        // return parent::version($request);
+
+        /**
+         * @see https://github.com/inertiajs/inertia-laravel/pull/653
+         */
+        return (string) hash_file('xxh128', public_path('build/manifest.json'));
     }
 
     /**
@@ -37,6 +41,7 @@ final class HandleInertiaRequests extends Middleware
     {
         return array_filter([
             ...parent::share($request),
+            'app' => fn () => $this->shareApp($request),
             // 'auth' => $this->whenAuthenticated(fn () => $this->shareAuth($request)),
             // 'meta' => fn () => $this->shareMeta($request),
             // 'redirect' => fn () => $this->shareRedirect($request),
@@ -44,9 +49,31 @@ final class HandleInertiaRequests extends Middleware
         ]);
     }
 
+    private function shareApp(Request $request): array
+    {
+        $config = [
+            'name' => config('app.name'),
+            'locale' => app()->getLocale(),
+        ];
+
+        if ((config('app.debug') === true) && !app()->isProduction()) {
+            $config['debug'] = true;
+        }
+
+        if (!app()->isProduction()) {
+            $config['env'] = config('app.env');
+        }
+
+        return array_filter([
+            ...$config,
+            //
+        ]);
+    }
+
     // private function shareAuth(Request $request): array
     // {
     //     return array_filter([
+    //         'authenticated' => Auth::check() ? true : null,
     //         'user' => UserData::from($request->user()),
     //         'organization' => OrganizationData::from($request->user()->organization),
     //     ]);

@@ -22,6 +22,8 @@ export default function createInertiaAppProps(options: CreateInertiaAppPropsOpti
         setup({ el, App, props, plugin }) {
             const vueApp = createSSRApp({ render: () => h(App, props) }).use(plugin);
 
+            app().refreshConfig(props.initialPage.props.app);
+
             registerPlugins(vueApp);
             registerComponents(vueApp);
 
@@ -35,10 +37,8 @@ export default function createInertiaAppProps(options: CreateInertiaAppPropsOpti
 
             if (import.meta.env.DEV && app().hasDebugModeEnabled()) {
                 // @ts-expect-error shush
-                window[`$app-${(Math.random() + '').slice(2)}`] = {
-                    configs: {
-                        app: app(),
-                    },
+                window.$app = {
+                    app: app(),
                     inertia: {
                         el,
                         App,
@@ -53,7 +53,7 @@ export default function createInertiaAppProps(options: CreateInertiaAppPropsOpti
             return vueApp;
         },
         progress: {
-            color: 'hsl(var(--primary-600))',
+            color: 'var(--accent-color)',
         },
     };
 }

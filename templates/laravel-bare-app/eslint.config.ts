@@ -54,7 +54,7 @@ export default typescriptEslint.config(
             'routes',
             'storage',
             'stubs',
-            'tests/phpunit',
+            'tests/pest',
             'tests/vitest/.coverage',
             'tests/playwright/.test-results',
             'tests/playwright/.report',
@@ -134,8 +134,8 @@ export default typescriptEslint.config(
                         'bin',
                         'scripts',
 
-                        'devDependencies',
                         'dependencies',
+                        'devDependencies',
                         'peerDependencies',
                         'peerDependenciesMeta',
 

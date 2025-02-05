@@ -5,6 +5,14 @@ import tailwindcss from '@tailwindcss/vite';
 import manifestSRI from 'vite-plugin-manifest-sri';
 import watchAndRun from '@kitql/vite-plugin-watch-and-run';
 
+/**
+ * If you want to debug your dependencies by making local edits, you can:
+ *     - Temporarily disable cache via the Network tab of your browser devtools;
+ *     - Restart Vite dev server with the `--force` flag to re-bundle the deps;
+ *     - Reload the page.
+ *
+ * @see https://vitejs.dev/guide/dep-pre-bundling#browser-cache
+ */
 export default defineConfig({
     build: {
         /**

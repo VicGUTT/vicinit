@@ -1,46 +1,37 @@
 import type { App as Config, Environment } from '@/types/configs/app.js';
-import config from '@/configs/app.json';
 
 export default class App {
-    private static _instance: App | null = null;
+    static #instance: App | null = null;
 
-    public static instance(): App {
-        if (!App._instance) {
-            App._instance = new App();
+    #config: Config;
+
+    constructor(config?: Config) {
+        if (!config) {
+            config = {
+                name: import.meta.env.VITE_APP_NAME,
+                locale: 'en',
+            };
         }
 
-        return App._instance;
+        this.#config = config;
+    }
+
+    public static instance(config?: Config): App {
+        if (!App.#instance) {
+            App.#instance = new App(config);
+        }
+
+        return App.#instance;
     }
 
     public get name(): string {
-        return this.#config.name ?? location.hostname;
+        return this.#config.name;
     }
 
-    // public get url(): string {
-    //     return this.#config.url ?? location.origin;
-    // }
-
-    // public get assetUrl(): string {
-    //     return this.#config.asset_url ?? this.url;
-    // }
-
-    // public get timezone(): string {
-    //     return this.#config.timezone ?? 'UTC';
-    // }
-
-    // public get locale(): string {
-    //     return this.#config.locale ?? 'en';
-    // }
-
-    // public get fallbackLocale(): string {
-    //     return this.#config.fallback_locale ?? 'en';
-    // }
-
-    get #config(): Config {
-        return config as Config;
-    }
-
-    get #env(): Environment {
+    /**
+     * Retrieve the environment.
+     */
+    public environment(): Environment {
         return this.#config.env || 'production';
     }
 
@@ -48,14 +39,14 @@ export default class App {
      * Determine if the application is in the local environment.
      */
     public isLocal(): boolean {
-        return this.#env === 'local';
+        return this.environment() === 'local';
     }
 
     /**
      * Determine if the application is in the production environment.
      */
     public isProduction(): boolean {
-        return this.#env === 'production';
+        return this.environment() === 'production';
     }
 
     /**
@@ -63,5 +54,31 @@ export default class App {
      */
     public hasDebugModeEnabled(): boolean {
         return this.#config.debug || false;
+    }
+
+    // /**
+    //  * Set the application's locale.
+    //  */
+    // public setLocale(locale: string): void {
+    //     this.#config.locale = locale;
+    // }
+
+    /**
+     * Get the application's locale.
+     */
+    public getLocale(): string {
+        return this.#config.locale;
+    }
+
+    /**
+     * Set the application's config.
+     */
+    public refreshConfig(config: Config): void {
+        this.#config = {
+            name: config.name,
+            locale: config.locale,
+            env: config.env,
+            debug: config.debug,
+        };
     }
 }

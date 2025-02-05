@@ -24,8 +24,19 @@ final class AddContentSecurityPolicyHeaders
         /** @var Response $response */
         $response = $next($request);
 
+        $nonce = Vite::cspNonce();
+
+        /**
+         * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+         * @see https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html#nonce-based
+         * @see https://laravel.com/docs/11.x/vite#content-security-policy-csp-nonce
+         *
+         * Example: `Content-Security-Policy: default-src 'self'; img-src 'self' example.com`.
+         */
         return $response->withHeaders([
-            'Content-Security-Policy' => "script-src 'nonce-" . Vite::cspNonce() . "'",
+            'Content-Security-Policy' => implode(';', [
+                "script-src 'nonce-{$nonce}' 'strict-dynamic'",
+            ]),
         ]);
     }
 }

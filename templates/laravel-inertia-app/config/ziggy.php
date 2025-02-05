@@ -2,13 +2,25 @@
 
 declare(strict_types=1);
 
-use App\Support\Ziggy\ZiggyConfigToJson;
+use App\Support\Ziggy\ZiggyConfigToFile;
 
 return [
-    'except' => ['_debugbar.*', 'sanctum.*', 'ignition.*', 'horizon.*', 'admin.*', 'admin:*', 'api:*', 'test:*', 'dev:*'],
+    'except' => [
+        '_debugbar.*',
+        'sanctum.*',
+        'ignition.*',
+        'horizon.*',
+        'storage.*',
+        'admin.*',
+        'admin:*',
+        'api:*',
+        'webhook:*',
+        'test:*',
+        'dev:*',
+    ],
     'skip-route-function' => true,
     'output' => [
-        'path' => 'appfront/assets/static/routes-config.json',
-        'file' => ZiggyConfigToJson::class,
+        'path' => 'appfront/assets/static/routes-config.js',
+        'file' => ZiggyConfigToFile::class,
     ],
 ];

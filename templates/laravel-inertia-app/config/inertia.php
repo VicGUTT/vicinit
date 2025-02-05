@@ -58,4 +58,8 @@ return [
             'vue',
         ],
     ],
+
+    'history' => [
+        'encrypt' => false,
+    ],
 ];

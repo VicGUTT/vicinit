@@ -9,36 +9,36 @@ export default class LaravelInertiaApp extends LaravelBareApp {
         return [
             this.createLaravelApp,
             this.setupGit,
+            this.publishConfigFiles,
             this.copyTemplateDirectoryToTarget,
             this.removeUnnecessaryProjectFilesAfterTemplateDirectoryCopy,
             this.renameGitignore,
             this.updateComposerJson,
-            this.updatePackageJson,
             this.updateProjectFiles,
+            this.updatePackageJson,
             this.installNpmDependencies,
             this.requireComposerDependencies,
+            this.removeUnnecessaryDependencies,
             this.installDependencies,
+            this.generateAppKey,
             this.runAdditionalArtisanCommands,
             this.updateAdditionalFiles,
+            this.runNpmBuild,
             this.formatProject,
             this.commitGit,
-            this.generateAppKey,
             this.openInVsCode,
         ];
     }
 
     protected async copyTemplateDirectoryToTarget(answers: Answers): Promise<void> {
-        super.copyTemplateDirectoryToTarget({ ...answers, template: 'laravel-bare-app' });
-        super.copyTemplateDirectoryToTarget(answers);
+        await super.copyTemplateDirectoryToTarget({ ...answers, template: 'laravel-bare-app' });
+        await super.copyTemplateDirectoryToTarget(answers);
     }
 
     protected async removeUnnecessaryProjectFilesAfterTemplateDirectoryCopy(): Promise<void> {
-        await cmd.run(`rm "${paths.target}/vite.config.js"`);
+        await super.removeUnnecessaryProjectFiles();
+
         await cmd.run(`rm -rf "${paths.target}/resources"`);
-        await cmd.run(`rm -rf "${paths.target}/tests/Feature"`);
-        await cmd.run(`rm -rf "${paths.target}/tests/Unit"`);
-        await cmd.run(`rm -rf "${paths.target}/tests/CreatesApplication.php"`);
-        await cmd.run(`rm -rf "${paths.target}/tests/TestCase.php"`);
     }
 
     protected async updatePackageJson(answers: Answers): Promise<void> {
@@ -47,8 +47,14 @@ export default class LaravelInertiaApp extends LaravelBareApp {
         await super.updatePackageJson(answers, {
             scripts: {
                 ...data.scripts,
-                build: 'vue-tsc --noEmit && vite build && vite build --ssr',
-                'pw:[filtered]': 'playwright test tests/playwright/src/index.test.ts --project=chromium',
+                dev: data.scripts['dev'],
+                preview: data.scripts['preview'],
+                build: data.scripts['build'],
+                'build:strict': data.scripts['build:strict'],
+                'build:types': 'vue-tsc --build',
+                'build:loose': 'vite build && vite build --ssr',
+                prod: data.scripts['prod'],
+                ssr: 'php artisan inertia:start-ssr',
             },
         });
     }
@@ -62,15 +68,6 @@ export default class LaravelInertiaApp extends LaravelBareApp {
                 ...data.autoload,
                 ...(superData.autoload ?? {}),
                 files: ['bootstrap/helpers.php'],
-            },
-            'autoload-dev': {
-                ...(data['autoload-dev'] ?? {}),
-                ...(superData['autoload-dev'] ?? {}),
-                'psr-4': {
-                    ...(data['autoload-dev']?.['psr-4'] ?? {}),
-                    ...((superData['autoload-dev'] as Record<string, unknown> | undefined)?.['psr-4'] ?? {}),
-                    'Tests\\': 'tests/phpunit',
-                },
             },
         };
     }
@@ -88,7 +85,28 @@ export default class LaravelInertiaApp extends LaravelBareApp {
                 'vue',
                 'ziggy-js',
             ],
-            dev: [...deps.dev, '@types/ziggy-js', '@vitejs/plugin-vue', 'vue-tsc', 'eslint-plugin-vue'],
+            dev: [
+                ...deps.dev.filter((dep) => {
+                    return ![
+                        '@eslint/js',
+                        'eslint-config-prettier',
+                        'eslint-plugin-prettier',
+                        'tslib',
+                        'typescript-eslint',
+                    ].includes(dep);
+                }),
+                '@inertiajs/core',
+                '@types/ziggy-js',
+                '@vitejs/plugin-vue',
+                '@vue/eslint-config-prettier',
+                '@vue/eslint-config-typescript',
+                '@vue/test-utils',
+                '@vue/tsconfig',
+                'eslint-plugin-vue',
+                'jiti',
+                'vite-plugin-vue-devtools',
+                'vue-tsc',
+            ],
         };
     }
 
@@ -101,54 +119,26 @@ export default class LaravelInertiaApp extends LaravelBareApp {
         };
     }
 
-    protected getAdditionalArtisanCommandsToRun(): string[] {
-        return [...super.getAdditionalArtisanCommandsToRun(), 'vendor:publish --provider="Inertia\\ServiceProvider"'];
-    }
-
     protected getAdditionalFilesToUpdate(): Record<string, Record<string, string>> {
         return {
             ...super.getAdditionalFilesToUpdate(),
-            [`${paths.target}/phpunit.xml`]: {
-                'tests/Unit': 'tests/phpunit/Unit',
-                'tests/Feature': 'tests/phpunit/Feature',
+            [`${paths.target}/.vscode/extensions.json`]: {
+                '"recommendations": [': '"recommendations": [\n        "Vue.volar",',
             },
-            [`${paths.target}/tailwind.config.ts`]: {
-                'export default {': `
-                export default {
-                    content: [
-                        // './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-                        // './storage/framework/views/*.php',
-                        // './app/View/**/*.php',
-                        // './resources/**/*.{blade.php,js,ts,vue,css}',
-                        './appfront/**/*.{ts,vue,css}',
-                        // './appfront/app.blade.php',
-                    ],`,
-            },
-            [`${paths.target}/package.json`]: {
-                '"preview": "vite preview",': `
-                "preview": "vite preview",
-                "ssr": "php artisan inertia:start-ssr",
-                `,
-            },
-            [`${paths.target}/tsconfig.json`]: {
-                'resources/ts': 'appfront',
-                resources: 'appfront',
-            },
-            [`${paths.target}/app/Http/Kernel.php`]: {
-                '\\App\\Http\\Middleware\\VerifyCsrfToken::class,\n            \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,':
-                    '\\App\\Http\\Middleware\\VerifyCsrfToken::class,\n            \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,\n            \\App\\Http\\Middleware\\HandleInertiaRequests::class,',
+            [`${paths.target}/bootstrap/app.php`]: {
+                'use App\\Http\\Middleware\\AddContentSecurityPolicyHeaders;':
+                    'use App\\Http\\Middleware\\AddContentSecurityPolicyHeaders;\nuse App\\Http\\Middleware\\HandleInertiaRequests;',
+                'AddContentSecurityPolicyHeaders::class,':
+                    'AddContentSecurityPolicyHeaders::class,\n            HandleInertiaRequests::class,',
             },
             [`${paths.target}/config/view.php`]: {
-                "resource_path('views'),": "// resource_path('views'),\n        front_path(),",
+                "resource_path('views'),": "// resource_path('views'),\n        front_path('views'),",
             },
-            [`${paths.target}/routes/web.php`]: {
-                'use Illuminate\\Support\\Facades\\Route;': `
-                use Inertia\\Response;
-                use Illuminate\\Support\\Facades\\Route;
-                `,
-                'function () {': 'function (): Response {',
-                "view('welcome')": "inertia('welcome')",
-                '});': "})->name('welcome');",
+            [`${paths.target}/phpstan.neon`]: {
+                '# - bootstrap/helpers.php': '- bootstrap/helpers.php',
+            },
+            [`${paths.target}/vitest.config.ts`]: {
+                "'resources/ts/**/*.{ts,js}'": "'appfront/**/*.{ts,js,vue}'",
             },
         };
     }

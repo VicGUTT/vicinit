@@ -12,13 +12,13 @@ export default class LaravelBareApp extends Project {
         return [
             this.createLaravelApp,
             this.setupGit,
+            this.publishConfigFiles,
             this.removeUnnecessaryProjectFiles,
             this.copyTemplateDirectoryToTarget,
             this.renameGitignore,
-            this.generateAppKey,
-            this.publishConfigFiles,
             this.updateComposerJson,
             this.updateProjectFiles,
+            this.generateAppKey,
             this.installNpmDependencies,
             this.requireComposerDependencies,
             this.removeUnnecessaryDependencies,
@@ -38,6 +38,11 @@ export default class LaravelBareApp extends Project {
         // await cmd.run(`composer create-project --prefer-dist laravel/laravel . dev-master`); // for the latest unreleased version
     }
 
+    protected async publishConfigFiles(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`php artisan config:publish --all`);
+    }
+
     protected async removeUnnecessaryProjectFiles(): Promise<void> {
         // Files
         await cmd.run(`rm "${paths.target}/vite.config.js"`);
@@ -49,16 +54,6 @@ export default class LaravelBareApp extends Project {
         await cmd.run(`rm -rf "${paths.target}/resources/js"`);
         await cmd.run(`rm -rf "${paths.target}/tests/Feature"`);
         await cmd.run(`rm -rf "${paths.target}/tests/Unit"`);
-    }
-
-    protected async generateAppKey(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`php artisan key:generate --ansi`);
-    }
-
-    protected async publishConfigFiles(): Promise<void> {
-        await cmd.run(`cd ${paths.target}`);
-        await cmd.run(`php artisan config:publish --all`);
     }
 
     protected async updateComposerJson(answers: Answers): Promise<void> {
@@ -89,6 +84,11 @@ export default class LaravelBareApp extends Project {
                     'App\\Providers\\AppServiceProvider::class,\n    App\\Providers\\RouteServiceProvider::class,',
             });
         });
+    }
+
+    protected async generateAppKey(): Promise<void> {
+        await cmd.run(`cd ${paths.target}`);
+        await cmd.run(`php artisan key:generate --ansi`);
     }
 
     protected async removeUnnecessaryDependencies(): Promise<void> {
@@ -149,7 +149,7 @@ export default class LaravelBareApp extends Project {
             'autoload-dev': {
                 ...(data['autoload-dev'] ?? {}),
                 'psr-4': {
-                    ...((data['autoload-dev'] ?? {})['psr-4'] ?? {}),
+                    ...(data['autoload-dev']?.['psr-4'] ?? {}),
                     'Tests\\': 'tests/pest',
                 },
             },

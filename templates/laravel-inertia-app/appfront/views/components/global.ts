@@ -1,4 +1,4 @@
-import { type App } from 'vue';
+import type { App } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 export default {

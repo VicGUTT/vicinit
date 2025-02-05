@@ -1,9 +1,8 @@
-import { type App } from 'vue';
-// @ts-expect-error shush
-import { ZiggyVue } from 'ziggy';
-import routesConfig from '@/assets/static/routes-config.json';
+import type { App } from 'vue';
+import { type Config, ZiggyVue } from 'ziggy-js';
+import routesConfig from '@/assets/static/routes-config.js';
 
 export default [
-    [ZiggyVue, routesConfig],
+    [ZiggyVue, routesConfig as Partial<Config>],
     //
-] satisfies Parameters<App['use']>[];
+] as Parameters<App['use']>[];

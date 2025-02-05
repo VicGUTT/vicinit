@@ -21,8 +21,8 @@ parameters:
         -
             message: '#Undefined variable: \$this#'
             path: tests/pest/*
-        # -
-        #     identifier: missingType.iterableValue
+        -
+            identifier: missingType.iterableValue
 
     # excludePaths:
     #     - ./*/*/FileToBeExcluded.php

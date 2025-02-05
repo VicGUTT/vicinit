@@ -1,0 +1,36 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.node.json",
+        },
+        {
+            "path": "./tsconfig.app.json",
+        },
+        {
+            "path": "./tsconfig.vitest.json",
+        },
+        {
+            "path": "./tsconfig.playwright.json",
+        },
+    ],
+    "compilerOptions": {
+        "strict": true,
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "isolatedModules": true,
+
+        "importHelpers": true,
+        "declaration": false,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
+        "allowJs": true
+    }
+}

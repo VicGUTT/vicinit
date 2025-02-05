@@ -1,17 +1,23 @@
 *.vic
 _ide_helper_models.php
 _ide_helper.php
+.phpstorm.meta.php
 package-lock.json
 composer.lock
+/.husky
 /.vic
-/.vscode
-/bootstrap
+# /.vscode
+/appfront/vendor
+/appfront/assets
+/bootstrap/cache
+/bootstrap/ssr
 /config
 # /database
 /node_modules
 /public
 /storage
 /stubs
-/tests/vitest/.coverage
+/tests/playwright/.report
 /tests/playwright/.test-results
+/tests/vitest/.coverage
 /vendor

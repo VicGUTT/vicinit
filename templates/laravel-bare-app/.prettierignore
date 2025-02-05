@@ -1,10 +1,13 @@
 *.vic
 _ide_helper_models.php
 _ide_helper.php
+.phpstorm.meta.php
 package-lock.json
 composer.lock
+/.husky
 /.vic
 # /.vscode
+/bootstrap/cache
 /bootstrap/ssr
 /config
 # /database

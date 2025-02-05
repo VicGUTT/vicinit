@@ -1,38 +1,61 @@
-/// <reference types="vitest" />
-
 import { type ExecException, exec } from 'node:child_process';
 import { type Plugin, defineConfig } from 'vite';
 import path from 'node:path';
-import laravel from 'laravel-vite-plugin';
+import laravel, { refreshPaths } from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
+import vueDevTools from 'vite-plugin-vue-devtools';
+import manifestSRI from 'vite-plugin-manifest-sri';
 import watchAndRun from '@kitql/vite-plugin-watch-and-run';
 
-const year = new Date().getFullYear();
-
+/**
+ * If you want to debug your dependencies by making local edits, you can:
+ *     - Temporarily disable cache via the Network tab of your browser devtools;
+ *     - Restart Vite dev server with the `--force` flag to re-bundle the deps;
+ *     - Reload the page.
+ *
+ * @see https://vitejs.dev/guide/dep-pre-bundling#browser-cache
+ */
 export default defineConfig({
     build: {
         /**
          * @see https://vitejs.dev/config/#build-target
          */
-        target: `es${year - 2}`,
+        target: `es${new Date().getFullYear() - 2}`,
     },
     resolve: {
         alias: {
-            '~': path.resolve('.'),
+            // '~': path.resolve('.'),
             '@': path.resolve('./appfront'),
-            ziggy: path.resolve('./vendor/tightenco/ziggy/dist/vue.es.js'),
         },
     },
     plugins: [
         laravel({
             input: 'appfront/app.ts',
             ssr: 'appfront/ssr.ts',
-            refresh: true,
+            refresh: {
+                paths: [...refreshPaths, './appfront/views/app.blade.php'],
+            },
         }),
         /**
-         * @see https://laravel.com/docs/10.x/vite#vue
+         * @see https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue
+         * @see https://laravel.com/docs/11.x/vite#vue
          */
         vue({
+            /**
+             * Requires @vitejs/plugin-vue@^5.1.0
+             */
+            features: {
+                /**
+                 * Set to `false` to disable Options API support and allow related code in
+                 * Vue core to be dropped via dead-code elimination in production builds,
+                 * resulting in smaller bundles.
+                 * - **default:** `true`
+                 *
+                 * Commented out as it breaks Inertia and potentially other dependencies.
+                 */
+                // optionsAPI: false,
+            },
             template: {
                 transformAssetUrls: {
                     // The Vue plugin will re-write asset URLs, when referenced
@@ -50,6 +73,9 @@ export default defineConfig({
                 },
             },
         }),
+        tailwindcss(),
+        vueDevTools(),
+        manifestSRI(),
         /**
          * @see https://www.kitql.dev/docs/setup/03_vite-plugin-watch-and-run
          */
@@ -60,38 +86,13 @@ export default defineConfig({
                 watch: path.resolve('app/Models/**/*.php').replace(/\\/g, '/'),
             },
             {
-                name: 'app:export-config',
-                run: 'php artisan app:export-config',
-                watch: path.resolve('config/**/*.php').replace(/\\/g, '/'),
-            },
-            {
-                name: 'ziggy:generate',
-                run: 'php artisan ziggy:generate',
+                name: 'ziggy:generate', // ziggy:generate --types
+                run: 'php artisan ziggy:generate', // php artisan ziggy:generate --types
                 watch: path.resolve('routes/**/*.php').replace(/\\/g, '/'),
             },
         ]),
         beforeBuild(),
     ],
-
-    /**
-     * @see https://vitest.dev/config/#configuration
-     */
-    test: {
-        environment: 'node',
-        include: ['./tests/vitest/**/*.test.ts'],
-        /**
-         * @see https://github.com/vitest-dev/vitest/blob/95b1ba4c17df1677136b39762c19d859db3f4cb2/packages/vitest/src/types/coverage.ts
-         */
-        coverage: {
-            reportsDirectory: './tests/vitest/.coverage',
-            // include: ['src/utils/**/*.{ts,js}'],
-            // Threshold
-            statements: 90,
-            branches: 90,
-            functions: 90,
-            lines: 90,
-        },
-    },
 });
 
 /* Custom plugins
@@ -117,7 +118,6 @@ function beforeBuild(): Plugin {
              */
             const envParam = this.meta.watchMode ? '' : '--env=production';
 
-            await run(`php artisan app:export-config ${envParam}`.trim());
             await run(`php artisan ziggy:generate ${envParam}`.trim());
         },
     };
