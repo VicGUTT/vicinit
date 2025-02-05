@@ -32,7 +32,7 @@
         "baseUrl": ".",
         "paths": {
             "@vicgutt/isjs/*": ["./node_modules/@vicgutt/isjs/dist/*"],
-            "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"],
-        },
-    },
+            "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"]
+        }
+    }
 }

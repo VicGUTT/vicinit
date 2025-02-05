@@ -32,10 +32,10 @@
         "paths": {
             "~/*": ["./*"],
             "@/*": ["src/*"],
-            "#/*": ["tests/*"],
+            "#/*": ["tests/*"]
             // "@vicgutt/isjs/*": ["./node_modules/@vicgutt/isjs/dist/*"],
             // "@vicgutt/strjs/*": ["./node_modules/@vicgutt/strjs/dist/*"],
             // "@vicgutt/macrojs/*": ["./node_modules/@vicgutt/macrojs/dist/*"]
-        },
-    },
+        }
+    }
 }
