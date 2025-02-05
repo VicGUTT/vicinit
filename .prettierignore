@@ -1,4 +1,8 @@
 /node_modules
+/templates/laravel-inertia-app/appfront/assets/static/routes-config.js
+/templates/**/*.js
+/templates/**/*.ts
+/templates/**/*.php
 /tests/__fixtures/**/*.css
 /tests/__fixtures/**/*.json
 /tests/__fixtures/**/*.html
