@@ -190,7 +190,7 @@ export default class LaravelBareApp extends Project {
 
     protected getNpmDependenciesToInstall(): InstallableDependencies {
         return {
-            regular: ['@vicgutt/isjs', '@vicgutt/macrojs', '@vicgutt/strjs'],
+            regular: ['@vicgutt/isjs', '@vicgutt/macrojs', '@vicgutt/strjs', '@vicgutt/tailwindcss-opinionated-preset'],
             dev: [
                 '@commitlint/cli',
                 '@commitlint/config-conventional',
@@ -202,7 +202,6 @@ export default class LaravelBareApp extends Project {
                 '@tsconfig/node22',
                 '@types/jsdom',
                 '@types/node',
-                // '@vicgutt/tailwindcss-opinionated-preset',
                 '@vitest/coverage-v8',
                 '@vitest/eslint-plugin',
                 'eslint',
